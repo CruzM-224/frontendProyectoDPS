@@ -4,9 +4,6 @@ import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 
 export default function TabLayout() {
   return (
-    /* <Stack>
-      <Stack.Screen name="index" />
-    </Stack> */
     <Tabs screenOptions={{ tabBarActiveTintColor: '#DB4444', tabBarInactiveTintColor: '#000000' }}>
     <Tabs.Screen
       name="index"
