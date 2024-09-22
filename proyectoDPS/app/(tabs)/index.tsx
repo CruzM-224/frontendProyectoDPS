@@ -13,8 +13,43 @@ import {
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { useFonts } from 'expo-font';
 
+import imagenEjemplo from '../../assets/images/home1.jpg';
+
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
+
+interface ElementProps {
+  image: number,
+  text: string,
+  price: number,
+  originalPrice?: number,
+}
+
+function Element ({ image, text, price, originalPrice  }: ElementProps) {
+  return(
+    <View style={styles.offer}>
+    <Image
+      style={styles.offerImage}
+      source={image}
+    />
+    <View style={styles.icons}>
+      <Pressable style={styles.favourites}>
+        <FontAwesome6 size={20} name="heart" color={'#000000'} />
+      </Pressable>
+      <Pressable style={styles.seen}>
+        <FontAwesome6 size={20} name="eye" color={'#000000'} />
+      </Pressable>
+    </View>
+    <Text style={styles.offerText}>{text}</Text>
+    <View style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
+      <Text style={styles.offerPrice}>${price.toFixed(2)}</Text>
+      <Text style={styles.originalPrice}>${originalPrice?.toFixed(2)}</Text>
+    </View>
+    <View style={styles.stars}>
+    </View>
+  </View>
+  );
+}
 
 export default function Tab() {
 
@@ -69,48 +104,12 @@ export default function Tab() {
         </View>
         <Text style={styles.offersTitle}>Ultimas ofertas</Text>
         <View style={styles.containerOffersElements}>
-          <View style={styles.offer}>
-            <Image
-              style={styles.offerImage}
-              source={require('../../assets/images/home1.jpg')}
-            />
-            <View style={styles.icons}>
-              <Pressable style={styles.favourites}>
-                <FontAwesome6 size={20} name="heart" color={'#000000'} />
-              </Pressable>
-              <Pressable style={styles.seen}>
-                <FontAwesome6 size={20} name="eye" color={'#000000'} />
-              </Pressable>
-            </View>
-            <Text style={styles.offerText}>Producto 1</Text>
-            <Text style={styles.offerPrice}>$10.00</Text>
-            <View style={styles.stars}>
-            </View>
-          </View>
-          <View style={styles.offer}>
-            <Image
-              style={styles.offerImage}
-              source={require('../../assets/images/home1.jpg')}
-            />
-            <View style={styles.icons}>
-              <Pressable style={styles.favourites}>
-                <FontAwesome6 size={20} name="heart" color={'#000000'} />
-              </Pressable>
-              <Pressable style={styles.seen}>
-                <FontAwesome6 size={20} name="eye" color={'#000000'} />
-              </Pressable>
-            </View>
-            <Text style={styles.offerText}>Producto 1</Text>
-            <Text style={styles.offerPrice}>$10.00</Text>
-            <View style={styles.stars}>
-            </View>
-          </View>
+          <Element image={imagenEjemplo} text={'Producto 1'} price={10.00} originalPrice={14.54}/>
+          <Element image={imagenEjemplo} text={'Producto 2'} price={34.00} originalPrice={55} />
+          <Element image={imagenEjemplo} text={'Producto 3'} price={36.99} originalPrice={45} />
+          <Element image={imagenEjemplo} text={'Producto 4'} price={12.00} originalPrice={15} />
         </View>
       </View>
-
-      {/* TODO mejorar la distibucion en los elementos de las ofertas
-        Revisar con herramientas de desarrollo de firefox
-      */}
 
     </ScrollView>
   );
@@ -154,7 +153,6 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     height: 40,
-    borderColor: 'lightgrey',
     backgroundColor: 'lightgrey',
     width: 200,
     borderRadius: 10,
@@ -166,7 +164,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     justifyContent: 'center',
     alignItems: 'center',
-    height: '25%',
+    height: screenHeight * 0.2,
     maxHeight: 250,
     minHeight: 150,
     overflow: 'hidden',
@@ -182,7 +180,6 @@ const styles = StyleSheet.create({
   },
   containerOffers: {
     width: '90%',
-    height: '100%',
     alignItems: 'center',
   },
   headerOffers: {
@@ -216,20 +213,20 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'space-around',
     width: '100%',
-    height: '100%',
   },
   offer: {
-    width: '35%',
-    aspectRatio: 200/170,
+    width: '32%',
+    height: screenHeight * 0.3,
     minHeight: 200,
-    minWidth: 170,
+    minWidth: 160,
+    maxWidth: 350,
     marginTop: 10,
     alignItems: 'center',
     position: 'relative',
   },
   offerImage: {
-    width: '90%',
-    height: '50%',
+    width: '100%',
+    height: '70%',
     minHeight: 120,
     minWidth: 150,
     aspectRatio: '120/150',
@@ -242,7 +239,7 @@ const styles = StyleSheet.create({
     height: screenHeight * 0.09,
     flexDirection: 'column',
     top: '5%',
-    right: '10%',
+    right: '5%',
     alignItems: 'flex-end',
     justifyContent: 'space-between',
   },
@@ -279,6 +276,17 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     color: '#DB4444',
     height: 20,
+  },
+  
+  originalPrice: {
+    fontSize: 14,
+    fontFamily: 'Poppins-Regular',
+    fontWeight: 'bold',
+    alignSelf: 'flex-start',
+    marginLeft: 10,
+    color: 'grey',
+    height: 20,
+    textDecorationLine: 'line-through',
   },
   stars: {
   },
