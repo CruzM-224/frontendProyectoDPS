@@ -12,6 +12,8 @@ import {
 } from 'react-native';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { useFonts } from 'expo-font';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { StatusBar } from 'expo-status-bar';
 
 import imagenEjemplo from '../../assets/images/home1.jpg';
 
@@ -64,63 +66,64 @@ export default function Tab() {
   }
 
   return (
-    <ScrollView contentContainerStyle={{alignItems: 'center'}}>
-      
-      {/* Localizacion */}
-      <View style={styles.containerLocation}>
-        <View style={styles.location}>
-          <FontAwesome6 name="location-dot" size={24} color="black" />
-          <Text style={styles.locationText}>San Salvador, El Salvador</Text>
-        </View>
-      </View>
+    <SafeAreaProvider>
+      <SafeAreaView style={{ flex: 1 }}>
+        <ScrollView contentContainerStyle={{alignItems: 'center'}}>
+          <StatusBar style="dark" />
+          {/* Localizacion */}
+          <View style={styles.containerLocation}>
+            <View style={styles.location}>
+              <FontAwesome6 name="location-dot" size={24} color="black" />
+              <Text style={styles.locationText}>San Salvador, El Salvador</Text>
+            </View>
+          </View>
+    
+          {/* Search */}
+          <View style={styles.containerSearch}>
+            <View style={styles.search}>
+              <FontAwesome6 name="magnifying-glass" size={24} color="black" />
+              <TextInput
+                style={styles.searchInput}
+                placeholder="Busca en la tienda" 
+              />
+            </View>
+          </View>
+    
+          {/* image */}
+          <View style={styles.containerImage}>
+            <Image
+              style={{width: '100%', height: '100%', borderRadius: 10}}
+              source={require('../../assets/images/home1.jpg')}
+              />
+          </View>
+    
+          {/* line */}
+          <View style={styles.line} />
+    
+          {/* Offers */}
+          <View style={styles.containerOffers}>
+            <View style={styles.headerOffers}>
+              <View style={styles.headerSquare} />
+              <Text style={styles.headerText}>Ofertas</Text>
+            </View>
+            <Text style={styles.offersTitle}>Ultimas ofertas</Text>
+            <View style={styles.containerOffersElements}>
+              <Element image={imagenEjemplo} text={'Producto 1'} price={10.00} originalPrice={14.54}/>
+              <Element image={imagenEjemplo} text={'Producto 2'} price={34.00} originalPrice={55} />
+              <Element image={imagenEjemplo} text={'Producto 3'} price={36.99} originalPrice={45} />
+              <Element image={imagenEjemplo} text={'Producto 4'} price={12.00} originalPrice={15} />
+            </View>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    </SafeAreaProvider>
 
-      {/* Search */}
-      <View style={styles.containerSearch}>
-        <View style={styles.search}>
-          <FontAwesome6 name="magnifying-glass" size={24} color="black" />
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Busca en la tienda" 
-          />
-        </View>
-      </View>
-
-      {/* image */}
-      <View style={styles.containerImage}>
-        <Image
-          style={{width: '100%', height: '100%', borderRadius: 10}}
-          source={require('../../assets/images/home1.jpg')}
-          />
-      </View>
-
-      {/* line */}
-      <View style={styles.line} />
-
-      {/* Offers */}
-      <View style={styles.containerOffers}>
-        <View style={styles.headerOffers}>
-          <View style={styles.headerSquare} />
-          <Text style={styles.headerText}>Ofertas</Text>
-        </View>
-        <Text style={styles.offersTitle}>Ultimas ofertas</Text>
-        <View style={styles.containerOffersElements}>
-          <Element image={imagenEjemplo} text={'Producto 1'} price={10.00} originalPrice={14.54}/>
-          <Element image={imagenEjemplo} text={'Producto 2'} price={34.00} originalPrice={55} />
-          <Element image={imagenEjemplo} text={'Producto 3'} price={36.99} originalPrice={45} />
-          <Element image={imagenEjemplo} text={'Producto 4'} price={12.00} originalPrice={15} />
-        </View>
-      </View>
-
-    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: 'center',
-    fontFamily: 'Poppins-Regular',
-    overflow: 'scroll',
+    flex: 1
   },
   containerLocation: {
     justifyContent: 'center',
