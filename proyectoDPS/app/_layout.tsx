@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Stack } from 'expo-router/stack';
 
-import SplashScreen from './splashScreen';
+
+import SplashScreen from '../app/SplashScreen';
+
 
 
 export default function Layout() {
@@ -25,10 +27,10 @@ export default function Layout() {
   }
 
   return (
-    <>
+    
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       </Stack>
-    </>
-  );
+      );
+
 }
