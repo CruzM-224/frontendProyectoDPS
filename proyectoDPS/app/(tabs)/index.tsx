@@ -114,6 +114,99 @@ export default function Tab() {
               <Element image={imagenEjemplo} text={'Producto 4'} price={12.00} originalPrice={15} />
             </View>
           </View>
+          {/* line */}
+          <View style={styles.line} />
+    
+          {/* New products */}
+          <View style={styles.containerOffers}>
+            <View style={styles.headerOffers}>
+              <View style={styles.headerSquare} />
+              <Text style={styles.headerText}>Nuevo</Text>
+            </View>
+            <Text style={styles.offersTitle}>Recien llegado</Text>
+            <View style={styles.containerNewProducts}>
+              <View style={styles.containerMainNewProducts}>
+                <View style={styles.containerMainNewProductsText}>
+                  <Text style={{ color: 'white', fontFamily: 'Poppins-Regular', fontSize: 18, width: '90%' }}>Playstation 5</Text>
+                  <Text style={{ color: 'white', fontFamily: 'Poppins-Regular', fontSize: 12, textShadowColor: 'black', textShadowRadius: 15, width: '60%'  }}>Black and white version of PS5 coming out on sale.</Text>
+                  <Text style={{ color: 'white', fontFamily: 'Poppins-Regular', fontSize: 14, textDecorationLine: 'underline', width: '90%'  }}>Buy now</Text>
+                </View>
+                <Image
+                  source={require('../../assets/images/ps5.png')}
+                  style={{ aspectRatio: 1, minHeight:250, minWidth:250, width: screenHeight * 0.3, height: screenHeight * 0.3, position: 'absolute', right: 5, bottom: 30}}
+                />
+              </View>
+              <View style={styles.secondaryPanel}>
+                <View style={styles.containerMain2NewProducts}>
+                  <View style={styles.containerMainNewProductsText2}>
+                    <Text style={{ color: 'white', fontFamily: 'Poppins-Regular', fontSize: 18, textAlign: 'right', width: '40%', alignSelf: 'flex-end'}}>LED 4K Monitors</Text>
+                    <Text style={{ color: 'white', fontFamily: 'Poppins-Regular', fontSize: 12, textAlign: 'right', width: '50%', alignSelf: 'flex-end', textShadowColor: 'black', textShadowRadius: 15, }}>Most advanced technologies</Text>
+                    <Text style={{ color: 'white', fontFamily: 'Poppins-Regular', fontSize: 14, textAlign: 'right', width: '90%', alignSelf: 'flex-end', textDecorationLine: 'underline' }}>Buy now</Text>
+                  </View>
+                  <Image
+                    source={require('../../assets/images/monitor.png')}
+                    style={{ width: 170, height: 150, position: 'absolute', left: 20, bottom: 20,}}
+                  />
+                </View>
+                <View style={styles.containerSecondaryNewProducts}>
+                  <View style={styles.containerSecondaryProduct}>
+                    <View style={styles.containerMainSecondaryProductsText}>
+                      <Text style={{ color: 'white', fontFamily: 'Poppins-Regular', fontSize: 18, textAlign: 'right', width: '90%', alignSelf: 'flex-end'}}>Speakers</Text>
+                      <Text style={{ color: 'white', fontFamily: 'Poppins-Regular', fontSize: 12, textAlign: 'right', width: '90%', alignSelf: 'flex-end', textShadowColor: 'black', textShadowRadius: 15 }}>Amazon wireless speakers</Text>
+                    </View>
+                    <Image
+                      source={require('../../assets/images/amazonSpeaker.png')}
+                      style={{ width: 100, height: 120, position: 'absolute', left: 0, bottom: 10,}}
+                    />
+                  </View>
+                  <View style={styles.containerSecondaryProduct}>
+                    <View style={styles.containerMainSecondaryProductsText}>
+                      <Text style={{ color: 'white', fontFamily: 'Poppins-Regular', fontSize: 18, textAlign: 'right', width: '90%', alignSelf: 'flex-end'}}>Mouse</Text>
+                      <Text style={{ color: 'white', fontFamily: 'Poppins-Regular', fontSize: 12, textAlign: 'right', width: '90%', alignSelf: 'flex-end', textShadowColor: 'black', textShadowRadius: 15 }}>Wired hp mouse HP 100</Text>
+                    </View>
+                    <Image
+                      source={require('../../assets/images/hp100.png')}
+                      style={{ width: 110, height: 100, position: 'absolute', left: 10, bottom: 30,}}
+                    />
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+
+          {/* line */}
+          <View style={styles.line} />
+
+          {/* Benefits */}
+          <View style={styles.containerBenefits}>
+            <View style={styles.benefit}>
+              <View style={styles.exteriorCircle}>
+                <View style={styles.interiorCircle}>
+                  <FontAwesome6 name="truck" size={36} color="white" />
+                </View>
+              </View>
+              <Text style={styles.benefitText}>Amplia Cobertura</Text>
+              <Text style={styles.benefitSecondaryText}>Envio gratis en ordenes mayores a $100</Text>
+            </View>
+            <View style={styles.benefit}>
+              <View style={styles.exteriorCircle}>
+                <View style={styles.interiorCircle}>
+                  <FontAwesome6 name="headset" size={36} color="white" />
+                </View>
+              </View>
+              <Text style={styles.benefitText}>Asistencia 24/7</Text>
+              <Text style={styles.benefitSecondaryText}>Soporte y asistencia amigable 24/7</Text>
+            </View>
+            <View style={styles.benefit}>
+              <View style={styles.exteriorCircle}>
+                <View style={styles.interiorCircle}>
+                  <FontAwesome6 name="shield-halved" size={36} color="white" />
+                </View>
+              </View>
+              <Text style={styles.benefitText}>Devoluciones</Text>
+              <Text style={styles.benefitSecondaryText}>Las devoluciones se hacen efectivas en 30 dias</Text>
+            </View>
+          </View>
         </ScrollView>
       </SafeAreaView>
     </SafeAreaProvider>
@@ -292,5 +385,122 @@ const styles = StyleSheet.create({
     textDecorationLine: 'line-through',
   },
   stars: {
+  },
+  containerNewProducts: {
+    width: '95%',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    flexDirection: 'row',
+    marginTop: 20,
+    marginBottom: 20,
+    maxWidth: 950,
+
+  },
+  secondaryPanel: {
+    width: '100%',
+    maxWidth: 450,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    marginTop: 0,
+    maxHeight: 400,
+  },
+  containerMainNewProducts: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: '100%',
+    maxWidth: 450,
+    maxHeight: 400,
+    height: screenHeight * 0.5,
+    backgroundColor: 'black',
+    position: 'relative',
+    marginBottom: 20,
+  },
+  containerMainNewProductsText: {
+    justifyContent: 'center',
+    alignSelf: 'flex-start',
+    width: '100%',
+    height: screenHeight * 0.25,
+    marginBottom: 10,
+    paddingLeft: 10,
+    zIndex: 6,
+  },
+  containerMain2NewProducts: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: '100%',
+    maxWidth: 450,
+    maxHeight: 190,
+    height: screenHeight * 0.25,
+    backgroundColor: 'black',
+    position: 'relative',
+    marginBottom: 20,
+  },
+  containerMainNewProductsText2: {
+    justifyContent: 'center',
+    alignSelf: 'flex-start',
+    width: '100%',
+    height: '100%',
+    paddingRight: 10,
+    zIndex: 6,
+  },
+  containerSecondaryNewProducts: {
+    flexDirection: 'row',
+    width: '100%',
+    maxWidth: 450,
+    justifyContent: 'space-between',
+  },
+  containerSecondaryProduct: {
+    width: '48%',
+    maxHeight: 190,
+    maxWidth: 220,
+    height: screenHeight * 0.25,
+    backgroundColor: 'black',
+  },
+  containerMainSecondaryProductsText: {
+    alignSelf: 'flex-start',
+    width: '100%',
+    height: screenHeight * 0.25,
+    paddingRight: 10,
+    zIndex: 6,
+  },
+  containerBenefits: {
+    width: '90%',
+    alignItems: 'center',
+    marginTop: 20,
+
+  },
+  benefit: {
+    width: '100%',
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  exteriorCircle: {
+    width: 100,
+    height: 100,
+    borderRadius: 100,
+    backgroundColor: 'lightgrey',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  interiorCircle: {
+    width: 80,
+    height: 80,
+    borderRadius: 100,
+    backgroundColor: 'black',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  benefitText: {
+    marginTop: 10,
+    fontSize: 20,
+    fontFamily: 'Poppins-Regular',
+    fontWeight: 'bold',
+  },
+  benefitSecondaryText: {
+    fontSize: 12,
+    fontFamily: 'Poppins-Regular',
+    color: 'grey',
   },
 });
