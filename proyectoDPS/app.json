@@ -12,6 +12,10 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "statusBar": {
+      "style": "dark",
+      "backgroundColor": "transparent"
+    },
     "ios": {
       "supportsTablet": true
     },
@@ -19,7 +23,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.cruzm224.proyectoDPS"
     },
     "web": {
       "bundler": "metro",
@@ -31,12 +36,19 @@
       [
         "expo-font",
         {
-          "fonts": ["./assets/fonts/Poppins-Regular.ttf"]
+          "fonts": [
+            "./assets/fonts/Poppins-Regular.ttf"
+          ]
         }
       ]
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "84a22fc7-6e8f-46b6-8fdd-2458c4b5df82"
+      }
     }
   }
 }

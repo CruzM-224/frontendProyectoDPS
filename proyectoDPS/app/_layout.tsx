@@ -4,6 +4,8 @@ import SplashScreen from '../components/LoginScreens/SplashScreen';
 import PrincipalLogin from '../components/LoginScreens/PrincipalLogin';
 import GetStarted from '../components/LoginScreens/GetStarted';
 
+
+
 export default function Layout() {
   const [appIsReady, setAppIsReady] = useState(false);
   //const [showLoginScreen, setShowLoginScreen] = useState(false);
