@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Stack } from 'expo-router/stack';
 
 
-import SplashScreen from '../app/SplashScreen';
+import SplashScreen from './splashScreen';
 
 
 
