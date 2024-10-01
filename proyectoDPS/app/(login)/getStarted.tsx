@@ -1,3 +1,4 @@
+import { Link } from 'expo-router';
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 
@@ -8,9 +9,11 @@ export default function LoginScreen() {
       <Text style={styles.title}>Get every tech supply you need</Text>
 
       {/* Botón de Crear cuenta */}
+      <Link href="/(login)/SignUp" asChild>
       <TouchableOpacity style={styles.createAccountButton}>
         <Text style={styles.createAccountText}>Create an account</Text>
       </TouchableOpacity>
+      </Link>
 
       {/* Texto de conectarse con redes sociales */}
       <Text style={styles.socialText}>Connect with social media</Text>

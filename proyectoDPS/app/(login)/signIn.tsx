@@ -61,9 +61,11 @@ const LoginScreen = () => {
       {/* Registro */}
       <View style={styles.signUpContainer}>
         <Text>Don't have an account? </Text>
+        <Link href="/(login)/SignUp" asChild>
         <TouchableOpacity>
           <Text style={styles.signUpText}>Sign up</Text>
         </TouchableOpacity>
+        </Link>
       </View>
     </View>
   );
