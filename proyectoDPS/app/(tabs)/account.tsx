@@ -69,9 +69,10 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   profilePic: {
-    width: 50,
-    height: 50,
-    borderRadius: 100,
+    width: 52,
+    height: 52,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   containerHeaderText: {
     marginLeft: 20,
