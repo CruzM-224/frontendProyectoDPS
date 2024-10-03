@@ -15,7 +15,8 @@ import { useFonts } from 'expo-font';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 
-import imagenEjemplo from '../../assets/images/home1.jpg';
+import imagenEjemplo from '../../../assets/images/home1.jpg';
+import { Link } from 'expo-router';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
@@ -56,7 +57,7 @@ function Element ({ image, text, price, originalPrice  }: ElementProps) {
 export default function Tab() {
 
   const [fontsLoaded] = useFonts({
-    'Poppins-Regular': require('../../assets/fonts/Poppins-Regular.ttf'),
+    'Poppins-Regular': require('../../../assets/fonts/Poppins-Regular.ttf'),
   });
 
   if (!fontsLoaded) {
@@ -71,11 +72,19 @@ export default function Tab() {
         <ScrollView contentContainerStyle={{alignItems: 'center'}}>
           <StatusBar style="dark" />
           {/* Localizacion */}
+          <View style={styles.homeTitle}>
+            <Image
+              source={require('../../../assets/images/Logotipo-UDB-Tech-shop.png')} // replace with your logo path
+              style={styles.logo}
+            />
+          </View>
           <View style={styles.containerLocation}>
-            <View style={styles.location}>
-              <FontAwesome6 name="location-dot" size={24} color="black" />
-              <Text style={styles.locationText}>San Salvador, El Salvador</Text>
-            </View>
+            <Link href="/home/location" asChild>
+              <Pressable style={styles.location}>
+                <FontAwesome6 name="location-dot" size={24} color="black" />
+                <Text style={styles.locationText}>San Salvador, El Salvador</Text>
+              </Pressable>
+            </Link>
           </View>
     
           {/* Search */}
@@ -93,7 +102,7 @@ export default function Tab() {
           <View style={styles.containerImage}>
             <Image
               style={{width: '100%', height: '100%', borderRadius: 10}}
-              source={require('../../assets/images/home1.jpg')}
+              source={require('../../../assets/images/home1.jpg')}
               />
           </View>
     
@@ -132,7 +141,7 @@ export default function Tab() {
                   <Text style={{ color: 'white', fontFamily: 'Poppins-Regular', fontSize: 14, textDecorationLine: 'underline', width: '90%'  }}>Buy now</Text>
                 </View>
                 <Image
-                  source={require('../../assets/images/ps5.png')}
+                  source={require('../../../assets/images/ps5.png')}
                   style={{ aspectRatio: 1, minHeight:250, minWidth:250, width: screenHeight * 0.3, height: screenHeight * 0.3, position: 'absolute', right: 5, bottom: 30}}
                 />
               </View>
@@ -144,7 +153,7 @@ export default function Tab() {
                     <Text style={{ color: 'white', fontFamily: 'Poppins-Regular', fontSize: 14, textAlign: 'right', width: '90%', alignSelf: 'flex-end', textDecorationLine: 'underline' }}>Buy now</Text>
                   </View>
                   <Image
-                    source={require('../../assets/images/monitor.png')}
+                    source={require('../../../assets/images/monitor.png')}
                     style={{ width: 170, height: 150, position: 'absolute', left: 20, bottom: 20,}}
                   />
                 </View>
@@ -155,7 +164,7 @@ export default function Tab() {
                       <Text style={{ color: 'white', fontFamily: 'Poppins-Regular', fontSize: 12, textAlign: 'right', width: '90%', alignSelf: 'flex-end', textShadowColor: 'black', textShadowRadius: 15 }}>Amazon wireless speakers</Text>
                     </View>
                     <Image
-                      source={require('../../assets/images/amazonSpeaker.png')}
+                      source={require('../../../assets/images/amazonSpeaker.png')}
                       style={{ width: 100, height: 120, position: 'absolute', left: 0, bottom: 10,}}
                     />
                   </View>
@@ -165,7 +174,7 @@ export default function Tab() {
                       <Text style={{ color: 'white', fontFamily: 'Poppins-Regular', fontSize: 12, textAlign: 'right', width: '90%', alignSelf: 'flex-end', textShadowColor: 'black', textShadowRadius: 15 }}>Wired hp mouse HP 100</Text>
                     </View>
                     <Image
-                      source={require('../../assets/images/hp100.png')}
+                      source={require('../../../assets/images/hp100.png')}
                       style={{ width: 110, height: 100, position: 'absolute', left: 10, bottom: 30,}}
                     />
                   </View>
@@ -217,6 +226,20 @@ export default function Tab() {
 const styles = StyleSheet.create({
   container: {
     flex: 1
+  },
+  homeTitle: {
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    paddingLeft: 20,
+    height: 64,
+    width: '100%',
+    backgroundColor: 'white',
+    borderBottomWidth: 1,
+    borderBottomColor: 'lightgrey',
+  },
+  logo: {
+    width: 60, // adjust as needed
+    height: 60, // adjust as needed
   },
   containerLocation: {
     justifyContent: 'center',

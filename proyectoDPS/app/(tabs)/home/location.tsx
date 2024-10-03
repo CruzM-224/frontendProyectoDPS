@@ -1,38 +1,42 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Dimensions, StyleSheet, Image, Platform, KeyboardAvoidingView, ScrollView } from 'react-native';
 import DropdownPicker from 'react-native-dropdown-picker';
-import  { SafeAreaView } from 'react-native-safe-area-context'; 
+import { SafeAreaView } from 'react-native-safe-area-context'; 
+
+const screenHeight = Dimensions.get('window').height;
+const screenWidth = Dimensions.get('window').width;
+
 const LocationScreen = () => {
   const [zone, setZone] = useState('');
   const [address, setAddress] = useState('');
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
-  const [items, setItems] = useState([   
+  const [items, setItems] = useState([
+    { label: 'San Salvador', value: 'San Salvador' },
+    { label: 'Ahuachapán', value: 'Ahuachapán' },
+    { label: 'Cabañas', value: 'Cabañas' },
+    { label: 'Chalatenango', value: 'Chalatenango' },
+    { label: 'Cuscatlán', value: 'Cuscatlán' },
+    { label: 'La Libertad', value: 'La Libertad' },
+    { label: 'La Paz', value: 'La Paz' },
+    { label: 'La Unión', value: 'La Unión' },
+    { label: 'Morazán', value: 'Morazán' },
+    { label: 'San Miguel', value: 'San Miguel' },
+    { label: 'Santa Ana', value: 'Santa Ana' },
+    { label: 'Sonsonate', value: 'Sonsonate' },
+    { label: 'Usulután', value: 'Usulután' },
+  ]);
 
-  { label: 'San Salvador', value: 'San Salvador' },
-  { label: 'Ahuachapán', value: 'Ahuachapán' },
-  { label: 'Cabañas', value: 'Cabañas'  },
-  { label: 'Chalatenango', value: 'Chalatenango'  },
-  { label: 'Cuscatlán', value: 'Cuscatlán' },
-  { label: 'La Libertad', value: 'La Libertad' },
-  { label: 'La Paz', value: 'La Paz' },
-  { label: 'La Unión', value: 'La Unión' },
-  { label: 'Morazán', value: 'Morazán' },
-  { label: 'San Miguel', value: 'San Miguel' },
-  { label: 'Santa Ana', value: 'Santa Ana' },
-  { label: 'Sonsonate', value: 'Sonsonate' },
-  { label: 'Usulután', value: 'Usulután' },  ]);
-const [selectedLocation, setSelectedLocation] = useState({
-    departamento: '',
-    direccion: '',
-  });
   const handleZoneChange = (item) => {
     setZone(item.label);
     setValue(item.value);
   };
 
   return (
-    <SafeAreaView style={styles.container}> 
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
       <Text style={styles.title}>Ingrese su ubicación</Text>
 
       <Image
@@ -40,11 +44,8 @@ const [selectedLocation, setSelectedLocation] = useState({
         style={styles.image}
         resizeMode="contain"
       />
-      <View style={styles.titleContainer}>
-        <Text style={styles.subtitle}>Ingrese su departamento y dirección</Text>
-      </View>
 
-      <View style={styles.inputContainer}>
+      <View style={styles.inputContainerDropdown}>
         <Text style={styles.label}>Departamento de:</Text>
         <DropdownPicker
           open={open}
@@ -57,18 +58,31 @@ const [selectedLocation, setSelectedLocation] = useState({
           onChangeItem={handleZoneChange}
           searchable={true}
           searchPlaceholder="Buscar departamento"
+          dropDownContainerStyle={{ backgroundColor: '#fff',
+            borderWidth: 1,
+            borderColor: '#ccc',
+            zIndex: 1000,
+            position: 'relative',
+            top: 0,
+            height: 200,
+          }}
         />
       </View>
 
       <View style={styles.inputContainer}>
         <Text style={styles.label}>Su dirección:</Text>
-        <TextInput style={styles.input} value={address} onChangeText={setAddress} />
+        <TextInput
+          style={styles.input}
+          value={address}
+          onChangeText={setAddress}
+          placeholder="Escriba su dirección"
+        />
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={("")}>
+      <TouchableOpacity style={styles.button}>
         <Text style={styles.buttonText}>Confirmar</Text>
       </TouchableOpacity>
-    </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -78,11 +92,14 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: '#fff',
   },
+  scrollViewContent: {
+    flexGrow: 1,
+    justifyContent: 'center',
+  },
   title: {
     fontSize: 25,
     fontWeight: 'bold',
-    marginBottom:   
- 10,
+    marginBottom: 10,
     alignSelf: 'center',
   },
   subtitle: {
@@ -101,6 +118,9 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     padding: 10,
   },
+  inputContainerDropdown: {
+    marginBottom: 10,
+  },
   button: {
     backgroundColor: 'red',
     padding: 15,
@@ -113,7 +133,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: '25%',
+    height: screenHeight * 0.2,
   },
   titleContainer: {
     alignItems: 'center',
@@ -121,3 +141,5 @@ const styles = StyleSheet.create({
 });
 
 export default LocationScreen;
+
+//Esta es la ultima estable

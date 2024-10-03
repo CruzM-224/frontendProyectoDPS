@@ -15,7 +15,7 @@ const OrderAcceptedScreen = () => {
   return (
     <View style={styles.container}>
       <Animated.Image
-        source={require('./assets/images/greencheckmark.png')}
+        source={require('../../../assets/images/greencheckmark.png')}
         style={[styles.checkMark, { transform: [{ scale: scaleAnim }] }]}
       />
       <Text style={styles.title}>Su orden ha sido aceptada</Text>

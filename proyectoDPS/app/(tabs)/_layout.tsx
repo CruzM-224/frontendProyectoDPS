@@ -5,11 +5,12 @@ import { StatusBar } from 'expo-status-bar';
 export default function TabLayout() {
   return (
     <>
-      <Tabs screenOptions={{ tabBarActiveTintColor: '#DB4444', tabBarInactiveTintColor: '#000000' }}>
+      <Tabs screenOptions={{ tabBarActiveTintColor: '#DB4444', tabBarInactiveTintColor: '#000000', tabBarHideOnKeyboard: true }}>
         <Tabs.Screen
           name="home"
           options={{
             title: 'Shop',
+            headerShown: false,
             tabBarIcon: ({ color }) => <FontAwesome6 size={26} name="store" color={color} />,
           }}
         />

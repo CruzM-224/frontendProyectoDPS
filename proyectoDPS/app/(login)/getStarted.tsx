@@ -9,7 +9,7 @@ export default function LoginScreen() {
       <Text style={styles.title}>Get every tech supply you need</Text>
 
       {/* Botón de Crear cuenta */}
-      <Link href="/(login)/SignUp" asChild>
+      <Link href="/(login)/signUp" asChild>
       <TouchableOpacity style={styles.createAccountButton}>
         <Text style={styles.createAccountText}>Create an account</Text>
       </TouchableOpacity>

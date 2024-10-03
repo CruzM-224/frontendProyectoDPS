@@ -121,6 +121,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     padding: 10,
     alignItems: 'center',
+    justifyContent: 'center',
     marginBottom: 20,
     position: 'relative',
     height: 50,
@@ -128,7 +129,7 @@ const styles = StyleSheet.create({
   iconSignOut: {
     position: 'absolute',
     left: 20,
-    bottom: 14,
+    bottom: 12,
   },
   logOutButtonText: {
     color: '#fff',
