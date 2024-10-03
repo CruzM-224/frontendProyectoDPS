@@ -1,12 +1,43 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
-import { Link } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [username, setUsername] = useState('');
+  const [errors, setErrors] = useState({ email: '', password: '' });
+  const router = useRouter();
+
+  const validateInputs = () => {
+    let emailError = '';
+    let passwordError = '';
+
+    // Email validation using regex
+    const emailRegex = /\S+@\S+\.\S+/;
+    if (!email.trim()) {
+      emailError = 'Email is required';
+    } else if (!emailRegex.test(email)) {
+      emailError = 'Invalid email format';
+    }
+
+    // Password validation (simple length check)
+    const passwordRegex = /^(?=.*[A-Z])(?=.*[^a-zA-Z]).{6,}$/;
+    if (!password.trim()) {
+      passwordError = 'Password is required';
+    } else if (!passwordRegex.test(password)) {
+      passwordError = 'Password must contain at least one uppercase letter and one non-letter character';
+    }
+
+    // Set errors
+    setErrors({ email: emailError, password: passwordError });
+
+    // If no errors, proceed to login
+    if (!emailError && !passwordError) {
+      alert('Logging in...');
+      router.replace('/(tabs)/home');
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -28,7 +59,8 @@ const LoginScreen = () => {
         onChangeText={setEmail}
         placeholderTextColor="#999"
       />
-      
+      {errors.email ? <Text style={styles.errorText}>{errors.email}</Text> : null}
+
       {/* Input de contraseña */}
       <View style={styles.passwordContainer}>
         <TextInput
@@ -45,6 +77,7 @@ const LoginScreen = () => {
           </Text>
         </TouchableOpacity>
       </View>
+      {errors.password ? <Text style={styles.errorText}>{errors.password}</Text> : null}
 
       {/* Forgot password */}
       <TouchableOpacity>
@@ -52,19 +85,18 @@ const LoginScreen = () => {
       </TouchableOpacity>
 
       {/* Botón de inicio de sesión */}
-      <Link href="/(tabs)/home" asChild>
-        <TouchableOpacity style={styles.loginButton}>
-          <Text style={styles.loginButtonText}>Log in</Text>
-        </TouchableOpacity>
-      </Link>
+      <TouchableOpacity style={styles.loginButton} onPress={validateInputs}>
+        <Text style={styles.loginButtonText}>Log in</Text>
+      </TouchableOpacity>
+
 
       {/* Registro */}
       <View style={styles.signUpContainer}>
         <Text>Don't have an account? </Text>
         <Link href="/(login)/SignUp" asChild>
-        <TouchableOpacity>
-          <Text style={styles.signUpText}>Sign up</Text>
-        </TouchableOpacity>
+          <TouchableOpacity>
+            <Text style={styles.signUpText}>Sign up</Text>
+          </TouchableOpacity>
         </Link>
       </View>
     </View>
@@ -102,7 +134,7 @@ const styles = StyleSheet.create({
     borderColor: '#ddd',
     borderRadius: 10,
     padding: 15,
-    marginBottom: 15,
+    marginBottom: 10,
   },
   passwordContainer: {
     flexDirection: 'row',
@@ -112,7 +144,7 @@ const styles = StyleSheet.create({
     borderColor: '#ddd',
     borderRadius: 10,
     padding: 15,
-    marginBottom: 15,
+    marginBottom: 10,
   },
   showPassword: {
     color: '#007AFF',
@@ -142,6 +174,10 @@ const styles = StyleSheet.create({
   signUpText: {
     color: '#DB4444',
     fontWeight: 'bold',
+  },
+  errorText: {
+    color: 'red',
+    marginBottom: 10,
   },
 });
 

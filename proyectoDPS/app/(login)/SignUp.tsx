@@ -1,17 +1,49 @@
-import { Link } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native';
+import {StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
 
 const SignUpScreen = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errors, setErrors] = useState({ username: '', email: '', password: '' });
+  const router = useRouter();
+
+  const validateInputs = () => {
+    let emailError = '';
+    let passwordError = '';
+    let usernameError = '';
+
+    const emailRegex = /\S+@\S+\.\S+/;
+    if (!email.trim()) {
+      emailError = 'Email is required';
+    } else if (!emailRegex.test(email)) {
+      emailError = 'Invalid email format';
+    }
+
+    const UserRegex = /^(?=.*[A-Z])(?=.*[^a-zA-Z]).{6,}$/;
+    if (!username.trim()) {
+      usernameError = 'Username is required';
+    } else if (!UserRegex.test(username)) {
+      usernameError = 'Password must contain at least one uppercase letter and one non-letter character';
+    }
+
+    const passwordRegex = /^(?=.*[A-Z])(?=.*[^a-zA-Z]).{6,}$/;
+    if (!password.trim()) {
+      passwordError = 'Password is required';
+    } else if (!passwordRegex.test(password)) {
+      passwordError = 'Password must contain at least one uppercase letter and one non-letter character';
+    }
+
+    setErrors({email: emailError, username: usernameError, password: passwordError});
+
+    if (!emailError && !passwordError && !usernameError) {
+      alert('Logging in...');
+      router.replace('/(tabs)/home');
+    }
+
+
+  };
 
   return (
     <View style={styles.container}>
@@ -26,6 +58,7 @@ const SignUpScreen = () => {
           value={username}
           onChangeText={setUsername}
         />
+        {errors.username ? <Text style={styles.errorText}>{errors.username}</Text> : null}
       </View>
       <View style={styles.inputContainer}>
         <Text style={styles.label}>e-mail</Text>
@@ -34,6 +67,7 @@ const SignUpScreen = () => {
           value={email}
           onChangeText={setEmail}
         />
+        {errors.email ? <Text style={styles.errorText}>{errors.email}</Text> : null}
       </View>
       <View style={styles.inputContainer}>
         <Text style={styles.label}>Password</Text>
@@ -43,20 +77,23 @@ const SignUpScreen = () => {
           onChangeText={setPassword}
           secureTextEntry
         />
+        {errors.password ? <Text style={styles.errorText}>{errors.password}</Text> : null}
       </View>
-      <Link href="/(tabs)/home" asChild>
-        <TouchableOpacity style={styles.button}>
+
+        <TouchableOpacity style={styles.button} onPress={validateInputs}>
           <Text style={styles.buttonText}>Log in</Text>
         </TouchableOpacity>
-      </Link>
+
       <Text style={styles.footerText}>
         Already have an account?{' '}
       </Text>
+
       <Link href="/(login)/signIn" asChild>
       <TouchableOpacity>
           <Text style={styles.signInText}>Sign in</Text>
         </TouchableOpacity>
       </Link>
+
     </View>
   );
 };
@@ -111,6 +148,10 @@ const styles = StyleSheet.create({
     color: '#DB4444',
     fontWeight: 'bold',
     textAlign: 'center',
+  },
+  errorText: {
+    color: 'red',
+    marginBottom: 10,
   },
 });
 
