@@ -1,25 +1,29 @@
-import { Link } from 'expo-router';
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { Link } from 'expo-router';
 
-export default function LoginScreen() {
+interface LoginScreenProps {
+  promptAsync: () => void; // Adjust the type based on what `promptAsync` actually is
+}
+
+export default function LoginScreen({ promptAsync }: LoginScreenProps) {
   return (
     <View style={styles.container}>
       {/* Texto superior */}
       <Text style={styles.title}>Get every tech supply you need</Text>
 
       {/* Botón de Crear cuenta */}
-      <Link href="/(login)/signUp" asChild>
-      <TouchableOpacity style={styles.createAccountButton}>
-        <Text style={styles.createAccountText}>Create an account</Text>
-      </TouchableOpacity>
+      <Link href="/(login)/SignUp">
+        <TouchableOpacity style={styles.createAccountButton}>
+          <Text style={styles.createAccountText}>Create an account</Text>
+        </TouchableOpacity>
       </Link>
 
       {/* Texto de conectarse con redes sociales */}
       <Text style={styles.socialText}>Connect with social media</Text>
 
       {/* Botón de Google */}
-      <TouchableOpacity style={styles.googleButton}>
+      <TouchableOpacity style={styles.googleButton} onPress={() => promptAsync()}>
         <View style={styles.iconTextContainer}>
           <Image
             source={{ uri: 'https://www.freepnglogos.com/uploads/google-logo-png/google-logo-icon-png-transparent-background-osteopathy-16.png' }}

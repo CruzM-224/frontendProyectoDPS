@@ -17,7 +17,8 @@
       "backgroundColor": "transparent"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.cruzm224.proyectoDPS"
     },
     "android": {
       "adaptiveIcon": {
@@ -49,6 +50,7 @@
       "eas": {
         "projectId": "84a22fc7-6e8f-46b6-8fdd-2458c4b5df82"
       }
-    }
+    },
+    "owner": "proyecto_dps"
   }
 }
