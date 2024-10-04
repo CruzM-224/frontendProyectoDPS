@@ -14,6 +14,8 @@ interface FavouriteItemProps {
   };
 }
 
+
+
 const FavouriteItem = ({ item }: FavouriteItemProps) => {
   return(
     <View style={styles.favouriteItem}>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   View, 
   Text, 
@@ -17,9 +17,42 @@ import { StatusBar } from 'expo-status-bar';
 
 import imagenEjemplo from '../../../assets/images/home1.jpg';
 import { Link } from 'expo-router';
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQuery,
+} from '@tanstack/react-query';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
+
+const API_URL = 'http://YOUR_IP:8000/api/productos/get';
+
+// Solicitud de datos
+function useData(setLoading: (loading: boolean) => void) {
+  const { isLoading, error, data } = useQuery({
+    queryKey: ['products'],
+    queryFn: () =>
+      fetch(API_URL).then((res) => {
+        if (!res.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return res.json();
+      }),
+      staleTime: 0,
+  });
+
+  useEffect(() => {
+    if (!isLoading && !error) {
+      setLoading(false);
+      console.log(data);
+    }else if (error){
+      console.error("Error al cargar los datos", error);
+    }
+  }, [isLoading, error]);
+
+  return { isLoading, error, data };
+}
 
 interface ElementProps {
   image: number,
@@ -56,17 +89,26 @@ function Element ({ image, text, price, originalPrice  }: ElementProps) {
   );
 }
 
-export default function Tab() {
+function App() {
+  const [loading, setLoading] = useState(true);
 
   const [fontsLoaded] = useFonts({
     'Poppins-Regular': require('../../../assets/fonts/Poppins-Regular.ttf'),
   });
 
-  if (!fontsLoaded) {
+  const { isLoading, error, data} = useData(setLoading);
+  console.log(data);
+  console.log(isLoading);
+  console.log(error);
+  console.log("Esto si se muestra, que rabia");
+  if (!fontsLoaded || !loading) {
     return (
-      <ActivityIndicator size="large" color="#0000ff" />
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
     );
   }
+  console.log("Esto si se muestra, que rabia 2");
 
   return (
     <SafeAreaProvider>
@@ -222,6 +264,18 @@ export default function Tab() {
       </SafeAreaView>
     </SafeAreaProvider>
 
+  );
+}
+
+export default function Tab() {
+
+  const queryClient = new QueryClient();
+  
+  console.log("Esto si se muestra, que rabia 3");
+  return (
+    <QueryClientProvider client={queryClient}>
+      <App />
+    </QueryClientProvider>
   );
 }
 
