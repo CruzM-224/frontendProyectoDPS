@@ -30,27 +30,29 @@ interface ElementProps {
 
 function Element ({ image, text, price, originalPrice  }: ElementProps) {
   return(
-    <View style={styles.offer}>
-    <Image
-      style={styles.offerImage}
-      source={image}
-    />
-    <View style={styles.icons}>
-      <Pressable style={styles.favourites}>
-        <FontAwesome6 size={20} name="heart" color={'#000000'} />
+    <Link href="/home/productScreen" asChild>
+      <Pressable style={styles.offer}>
+        <Image
+          style={styles.offerImage}
+          source={image}
+        />
+        <View style={styles.icons}>
+          <Pressable style={styles.favourites}>
+            <FontAwesome6 size={20} name="heart" color={'#000000'} />
+          </Pressable>
+          <Pressable style={styles.seen}>
+            <FontAwesome6 size={20} name="eye" color={'#000000'} />
+          </Pressable>
+        </View>
+        <Text style={styles.offerText}>{text}</Text>
+        <View style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
+          <Text style={styles.offerPrice}>${price.toFixed(2)}</Text>
+          <Text style={styles.originalPrice}>${originalPrice?.toFixed(2)}</Text>
+        </View>
+        <View style={styles.stars}>
+        </View>
       </Pressable>
-      <Pressable style={styles.seen}>
-        <FontAwesome6 size={20} name="eye" color={'#000000'} />
-      </Pressable>
-    </View>
-    <Text style={styles.offerText}>{text}</Text>
-    <View style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
-      <Text style={styles.offerPrice}>${price.toFixed(2)}</Text>
-      <Text style={styles.originalPrice}>${originalPrice?.toFixed(2)}</Text>
-    </View>
-    <View style={styles.stars}>
-    </View>
-  </View>
+    </Link>
   );
 }
 

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, Button, SafeAreaView } from 'react-native';
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 const ProductScreen = () => {
   const [quantity, setQuantity] = useState(1);
@@ -28,45 +30,45 @@ const ProductScreen = () => {
         />
 
         <View style={styles.productTitleContainer}>
-          <Text style={styles.productTitle}> Teclado AK-900 </Text>
+          <Text style={styles.productTitle}>Teclado AK-900 </Text>
           <TouchableOpacity onPress={toggleFavorite}>
             {isFavorited ? ( 
-              <Text style={styles.favoriteIcon}>&#10084;</Text> 
+              <FontAwesome name="heart" size={30} color="red"  /> 
             ) : (
-              <Text style={styles.favoriteIcon}>&#128420;</Text> 
+              <FontAwesome name="heart-o" size={30} color="black" /> 
             )}
           </TouchableOpacity>
         </View>
 
-      <Text style={styles.productPrice}>$960.00</Text>
+        <Text style={styles.productPrice}>$960.00</Text>
 
-      <View style={styles.quantityContainer}>
-        <TouchableOpacity onPress={handleDecrease} style={styles.quantityButton}>
-          <Text style={styles.quantityminus}>-</Text>
+        <View style={styles.quantityContainer}>
+          <TouchableOpacity onPress={handleDecrease} style={styles.quantityButton}>
+            <FontAwesome6 name="minus" size={24} color="black" />
+          </TouchableOpacity>
+          
+          <Text style={styles.quantityText}>{quantity}</Text>
+
+          <TouchableOpacity onPress={handleIncrease} style={styles.quantityButton}>
+            <FontAwesome6 name="plus" size={24} color="black" />
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.productDetailContainer}>
+          <Text style={styles.productDetailTitle}>Detalles del producto:</Text>
+          <Text style={styles.productDetailText}>
+            El IMICE AK-900 está diseñado para soportar largas sesiones de juego y ofrece una durabilidad excepcional. El teclado está fabricado con materiales de alta calidad, lo que garantiza un rendimiento duradero. También cuenta con un cable trenzado que agrega resistencia adicional y evita que se enrede.
+          </Text>
+        </View>
+      
+        <TouchableOpacity style={styles.buttons}>
+          <Text style={styles.addToCartText}>Añadir al carrito</Text>
         </TouchableOpacity>
-        
-        <Text style={styles.quantityText}>{quantity}</Text>
-
-        <TouchableOpacity onPress={handleIncrease} style={styles.quantityButton}>
-          <Text style={styles.quantityplus}>+</Text>
+        <TouchableOpacity style={styles.buttons}>
+          <Text style={styles.addToCartText}>Volver</Text>
         </TouchableOpacity>
       </View>
-
-      <View style={styles.productDetailContainer}>
-        <Text style={styles.productDetailTitle}>Detalles del producto:</Text>
-        <Text style={styles.productDetailText}>
-          El IMICE AK-900 está diseñado para soportar largas sesiones de juego y ofrece una durabilidad excepcional. El teclado está fabricado con materiales de alta calidad, lo que garantiza un rendimiento duradero. También cuenta con un cable trenzado que agrega resistencia adicional y evita que se enrede.
-        </Text>
-      </View>
-    
-      <TouchableOpacity style={styles.buttons}>
-        <Text style={styles.addToCartText}>Añadir al carrito</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.buttons}>
-        <Text style={styles.addToCartText}>Volver</Text>
-      </TouchableOpacity>
-    </View>
-        </SafeAreaView>
+    </SafeAreaView>
 
   );
 };
@@ -74,7 +76,7 @@ const ProductScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    paddingHorizontal: 10,
     backgroundColor: '#fff',
   },
   productImage: {
@@ -85,8 +87,7 @@ const styles = StyleSheet.create({
   productTitleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between', 
-    marginVertical: 10,
+    justifyContent: 'space-between',
   },
   productTitle: {
     fontSize: 22,
@@ -94,16 +95,14 @@ const styles = StyleSheet.create({
   },
   productPrice: {
     fontSize: 20,
-    fontWeight: 'bold',
     color: '#333',
-    marginVertical: 10,
+    paddingLeft: 10,
   },
   quantityContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginVertical: 10,
-    marginBottom: 25,
+    marginBottom: 10,
   },
   quantityButton: {
     padding: 10,
@@ -126,7 +125,6 @@ const styles = StyleSheet.create({
 
   },
   productDetailContainer: {
-    marginVertical: 10,
   },
   productDetailTitle: {
     fontSize: 18,

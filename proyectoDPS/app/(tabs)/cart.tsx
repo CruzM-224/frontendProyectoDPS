@@ -1,7 +1,9 @@
-import { View, Text, StyleSheet, Image, Pressable, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Image, Pressable, ScrollView, TouchableOpacity } from 'react-native';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { FlatList } from 'react-native-reanimated/lib/typescript/Animated';
 import imageMonitor from '../../assets/images/monitor.png';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+
 
 interface CartItemProps {
   item: {
@@ -66,33 +68,36 @@ export default function Tab() {
             name: 'Monitor',
             price: 100,
             image: imageMonitor
-          }}></CartItem>
+          }} />
           <CartItem item={{
             id: 2,
             name: 'Monitor 2',
             price: 123.45,
             image: imageMonitor
-          }}></CartItem>
+          }} />
           <CartItem item={{
             id: 3,
             name: 'Tele',
             price: 344.1,
             image: imageMonitor
-          }}></CartItem>
+          }} />
           <CartItem item={{
             id: 4,
             name: 'Tele 2',
             price: 499.99,
             image: imageMonitor
-          }}></CartItem>
+          }} />
           <CartItem item={{
             id: 5,
             name: 'LED 4K',
             price: 356,
             image: imageMonitor
-          }}></CartItem>
+          }} />
         </ScrollView>
       </View>
+      <TouchableOpacity style={styles.checkout}>
+          <Text style={styles.checkoutText}>Go to checkout</Text>
+        </TouchableOpacity>
     </View>
   );
 }
@@ -146,6 +151,7 @@ const styles = StyleSheet.create({
   cartItemImage: {
     width: 120,
     height: 100,
+    resizeMode: 'contain',
   },
   cartItemMid: {
     width: '40%',
@@ -177,6 +183,23 @@ const styles = StyleSheet.create({
   },
   price: {
     paddingTop: 20,
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  checkout: {
+    backgroundColor: '#DB4444',
+    borderRadius: 100,
+    width: '70%',
+    marginTop: 20,
+    padding: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 20,
+    position: 'relative',
+    height: 50,
+  },
+  checkoutText: {
+    color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
   },
