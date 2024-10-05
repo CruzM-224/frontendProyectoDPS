@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, Button, SafeAreaView } from 'react-native';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { SearchParams } from 'expo-router';
+// Seguir con lo de parametros de navegacion
 
 const ProductScreen = () => {
   const [quantity, setQuantity] = useState(1);

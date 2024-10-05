@@ -22,6 +22,9 @@ import {
   QueryClientProvider,
   useQuery,
 } from '@tanstack/react-query';
+import useStore from '@/components/useStore';
+
+
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
@@ -55,19 +58,37 @@ function useData(setLoading: (loading: boolean) => void) {
 }
 
 interface ElementProps {
-  image: number,
+  image: string,
   text: string,
-  price: number,
-  originalPrice?: number,
+  descuento: string,
+  originalPrice: string,
+  description: string,
+}
+function getOfferPrice(price: string, discount: string) {
+  const originalPrice = Number.parseFloat(price);
+  const discountPrice = Number.parseFloat(discount);
+  return (originalPrice - discountPrice).toFixed(2);
 }
 
-function Element ({ image, text, price, originalPrice  }: ElementProps) {
+
+function Element ({ image, text, descuento, originalPrice, description  }: ElementProps) {
+  
+  const price = getOfferPrice(originalPrice, descuento);
+
   return(
-    <Link href="/home/productScreen" asChild>
+    <Link href={{
+      pathname: "/home/productScreen",
+      params: { 
+        imageUrl: image, 
+        title: text, 
+        price: price, 
+        description: description
+      },
+    }} asChild>
       <Pressable style={styles.offer}>
         <Image
           style={styles.offerImage}
-          source={image}
+          source={{ uri: image }}
         />
         <View style={styles.icons}>
           <Pressable style={styles.favourites}>
@@ -79,8 +100,8 @@ function Element ({ image, text, price, originalPrice  }: ElementProps) {
         </View>
         <Text style={styles.offerText}>{text}</Text>
         <View style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
-          <Text style={styles.offerPrice}>${price.toFixed(2)}</Text>
-          <Text style={styles.originalPrice}>${originalPrice?.toFixed(2)}</Text>
+          <Text style={styles.offerPrice}>${price}</Text>
+          <Text style={styles.originalPrice}>${originalPrice}</Text>
         </View>
         <View style={styles.stars}>
         </View>
@@ -91,24 +112,28 @@ function Element ({ image, text, price, originalPrice  }: ElementProps) {
 
 function App() {
   const [loading, setLoading] = useState(true);
-
+  const items = useStore((state) => state.items);
   const [fontsLoaded] = useFonts({
     'Poppins-Regular': require('../../../assets/fonts/Poppins-Regular.ttf'),
   });
 
-  const { isLoading, error, data} = useData(setLoading);
-  console.log(data);
-  console.log(isLoading);
-  console.log(error);
-  console.log("Esto si se muestra, que rabia");
-  if (!fontsLoaded || !loading) {
+  const { isLoading, error, data } = useData(setLoading);
+
+  useEffect(() => {
+    if (data?.productos && items.length === 0) {
+      useStore.setState({ items: data.productos });
+      console.log('Datos almacenados en Zustand:', data.productos);
+    }
+  }, [data, items.length]);
+
+  if (!fontsLoaded || loading || isLoading) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <ActivityIndicator size="large" color="#0000ff" />
       </View>
     );
   }
-  console.log("Esto si se muestra, que rabia 2");
+
 
   return (
     <SafeAreaProvider>
@@ -161,10 +186,10 @@ function App() {
             </View>
             <Text style={styles.offersTitle}>Ultimas ofertas</Text>
             <View style={styles.containerOffersElements}>
-              <Element image={imagenEjemplo} text={'Producto 1'} price={10.00} originalPrice={14.54}/>
-              <Element image={imagenEjemplo} text={'Producto 2'} price={34.00} originalPrice={55} />
-              <Element image={imagenEjemplo} text={'Producto 3'} price={36.99} originalPrice={45} />
-              <Element image={imagenEjemplo} text={'Producto 4'} price={12.00} originalPrice={15} />
+              <Element image={items[0].imagen} text={items[0].producto} descuento={items[0].descuento} originalPrice={items[0].precio} description={items[0].descripcion} />
+              <Element image={items[1].imagen} text={items[1].producto} descuento={items[1].descuento} originalPrice={items[1].precio} description={items[1].descripcion} />
+              <Element image={items[2].imagen} text={items[2].producto} descuento={items[2].descuento} originalPrice={items[2].precio} description={items[2].descripcion} />
+              <Element image={items[3].imagen} text={items[3].producto} descuento={items[3].descuento} originalPrice={items[3].precio} description={items[3].descripcion} />
             </View>
           </View>
           {/* line */}
@@ -271,7 +296,6 @@ export default function Tab() {
 
   const queryClient = new QueryClient();
   
-  console.log("Esto si se muestra, que rabia 3");
   return (
     <QueryClientProvider client={queryClient}>
       <App />
@@ -398,6 +422,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
     alignItems: 'center',
     position: 'relative',
+    borderWidth: 1,
+    borderColor: 'lightgrey', 
+    borderRadius: 10,
   },
   offerImage: {
     width: '100%',
