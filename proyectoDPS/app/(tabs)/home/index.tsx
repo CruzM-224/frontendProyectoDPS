@@ -29,7 +29,7 @@ import useStore from '@/components/useStore';
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
-const API_URL = 'http://YOUR_IP:8000/api/productos/get';
+const API_URL = 'http://192.168.0.10:8000/api/productos/get';
 
 // Solicitud de datos
 function useData(setLoading: (loading: boolean) => void) {
@@ -58,12 +58,14 @@ function useData(setLoading: (loading: boolean) => void) {
 }
 
 interface ElementProps {
+  id: number,
   image: string,
   text: string,
   descuento: string,
   originalPrice: string,
   description: string,
 }
+
 function getOfferPrice(price: string, discount: string) {
   const originalPrice = Number.parseFloat(price);
   const discountPrice = Number.parseFloat(discount);
@@ -71,7 +73,7 @@ function getOfferPrice(price: string, discount: string) {
 }
 
 
-function Element ({ image, text, descuento, originalPrice, description  }: ElementProps) {
+function Element ({ id, image, text, descuento, originalPrice, description  }: ElementProps) {
   
   const price = getOfferPrice(originalPrice, descuento);
 
@@ -79,6 +81,7 @@ function Element ({ image, text, descuento, originalPrice, description  }: Eleme
     <Link href={{
       pathname: "/home/productScreen",
       params: { 
+        id: id,
         imageUrl: image, 
         title: text, 
         price: price, 
@@ -186,10 +189,10 @@ function App() {
             </View>
             <Text style={styles.offersTitle}>Ultimas ofertas</Text>
             <View style={styles.containerOffersElements}>
-              <Element image={items[0].imagen} text={items[0].producto} descuento={items[0].descuento} originalPrice={items[0].precio} description={items[0].descripcion} />
-              <Element image={items[1].imagen} text={items[1].producto} descuento={items[1].descuento} originalPrice={items[1].precio} description={items[1].descripcion} />
-              <Element image={items[2].imagen} text={items[2].producto} descuento={items[2].descuento} originalPrice={items[2].precio} description={items[2].descripcion} />
-              <Element image={items[3].imagen} text={items[3].producto} descuento={items[3].descuento} originalPrice={items[3].precio} description={items[3].descripcion} />
+              <Element id={items[0].id} image={items[0].imagen} text={items[0].producto} descuento={items[0].descuento} originalPrice={items[0].precio} description={items[0].descripcion} />
+              <Element id={items[1].id} image={items[1].imagen} text={items[1].producto} descuento={items[1].descuento} originalPrice={items[1].precio} description={items[1].descripcion} />
+              <Element id={items[2].id} image={items[2].imagen} text={items[2].producto} descuento={items[2].descuento} originalPrice={items[2].precio} description={items[2].descripcion} />
+              <Element id={items[3].id} image={items[3].imagen} text={items[3].producto} descuento={items[3].descuento} originalPrice={items[3].precio} description={items[3].descripcion} />
             </View>
           </View>
           {/* line */}

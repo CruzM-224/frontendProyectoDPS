@@ -3,11 +3,22 @@ import { View, Text, Image, StyleSheet, TouchableOpacity, Button, SafeAreaView }
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useGlobalSearchParams } from 'expo-router';
+import useStore from '@/components/useStore';
 
 const ProductScreen = () => {
   const [quantity, setQuantity] = useState(1);
   const [isFavorited, setIsFavorited] = useState(false);
-  const { title, price, description, imageUrl } = useGlobalSearchParams();
+  const { id, title, price, description, imageUrl } = useGlobalSearchParams();
+  const addCartItem = useStore((state) => state.addCartItem);
+  
+  const item = {
+    id: id,
+    title: title,
+    price: price,
+    description: description,
+    imageUrl: imageUrl,
+    quantity: quantity
+  }
 
   const handleIncrease = () => {
     setQuantity(quantity + 1);
@@ -23,6 +34,10 @@ const ProductScreen = () => {
     setIsFavorited(!isFavorited); 
   };
 
+  const handleAddToCart = () => {
+    addCartItem(item);
+    console.log('Item added to cart:', item);
+  };
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.container}>
@@ -63,7 +78,7 @@ const ProductScreen = () => {
           </Text>
         </View>
       
-        <TouchableOpacity style={styles.buttons}>
+        <TouchableOpacity style={styles.buttons} onPress={handleAddToCart}>
           <Text style={styles.addToCartText}>Añadir al carrito</Text>
         </TouchableOpacity>
       </View>

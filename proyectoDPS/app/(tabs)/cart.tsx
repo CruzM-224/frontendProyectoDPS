@@ -1,20 +1,28 @@
-import { View, Text, StyleSheet, Image, Pressable, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, Pressable, FlatList, TouchableOpacity } from 'react-native';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
-import { FlatList } from 'react-native-reanimated/lib/typescript/Animated';
 import imageMonitor from '../../assets/images/monitor.png';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import useStore from '@/components/useStore';
 
 
 interface CartItemProps {
   item: {
     id: number;
     name: string;
-    price: number;
-    image: string;
+    price: string;
+    imageUrl: string;
+    quantity: number;
   };
 }
 
 const CartItem = ({ item }: CartItemProps) => {
+  const incrementCartItem = useStore((state) => state.incrementCartItemByOne);
+  const decrementCartItem = useStore((state) => state.decrementCartItemByOne);
+  const removeCartItem = useStore((state) => state.removeCartItem);
+
+  const finalPrice = (Number.parseFloat(item.price) * item.quantity).toFixed(2);
+
+  console.log(item);
   return(
     <View style={styles.cartItem}>
       <View style={styles.cartItemName}>
@@ -22,20 +30,24 @@ const CartItem = ({ item }: CartItemProps) => {
       </View>
       <View style={styles.cartItemBody}>
         <View style={styles.cartItemLeft}>
-          <Image style={styles.cartItemImage} source={imageMonitor} />
+          <Image style={styles.cartItemImage} source={{ uri: item.imageUrl }} />
         </View>
         <View style={styles.cartItemMid}>
           <Pressable style={({ pressed }) => [
             styles.btn,
             pressed && styles.btnPressed
-          ]}>
+          ]}
+            onPress={() => decrementCartItem(item.id)}
+          >
             <FontAwesome6 name="minus" size={24} color="black" />
           </Pressable>
-          <Text style={styles.quantity}>1</Text>
+          <Text style={styles.quantity}>{item.quantity}</Text>
           <Pressable style={({ pressed }) => [
             styles.btn,
             pressed && styles.btnPressed
-          ]}>
+          ]}
+            onPress={() => incrementCartItem(item.id)}
+          >
             <FontAwesome6 name="plus" size={24} color="black" />
           </Pressable>
         </View>
@@ -43,10 +55,12 @@ const CartItem = ({ item }: CartItemProps) => {
           <Pressable style={({ pressed }) => [
             styles.btnTrash,
             pressed && styles.btnPressed
-          ]}>
+          ]}
+            onPress={() => removeCartItem(item.id)}
+          >
             <FontAwesome6 name="trash" size={24} color="black" />
           </Pressable>
-          <Text style={styles.price}>${item.price.toFixed(2)}</Text>
+          <Text style={styles.price}>${finalPrice}</Text>
         </View>
       </View>
     </View>
@@ -54,6 +68,8 @@ const CartItem = ({ item }: CartItemProps) => {
 }
 
 export default function Tab() {
+  const cartItems = useStore((state) => state.cartItems);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -62,38 +78,12 @@ export default function Tab() {
       <View style={styles.containerBody}>
 
         {/* Migrar a flatlist una vez se pueda pedir la solicitud por servidor */}
-        <ScrollView>
-          <CartItem item={{
-            id: 1,
-            name: 'Monitor',
-            price: 100,
-            image: imageMonitor
-          }} />
-          <CartItem item={{
-            id: 2,
-            name: 'Monitor 2',
-            price: 123.45,
-            image: imageMonitor
-          }} />
-          <CartItem item={{
-            id: 3,
-            name: 'Tele',
-            price: 344.1,
-            image: imageMonitor
-          }} />
-          <CartItem item={{
-            id: 4,
-            name: 'Tele 2',
-            price: 499.99,
-            image: imageMonitor
-          }} />
-          <CartItem item={{
-            id: 5,
-            name: 'LED 4K',
-            price: 356,
-            image: imageMonitor
-          }} />
-        </ScrollView>
+        <FlatList
+          data={cartItems}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => <CartItem item={item} />}
+          contentContainerStyle={styles.cartContainer}
+        />
       </View>
       <TouchableOpacity style={styles.checkout}>
           <Text style={styles.checkoutText}>Go to checkout</Text>
@@ -151,7 +141,6 @@ const styles = StyleSheet.create({
   cartItemImage: {
     width: 120,
     height: 100,
-    resizeMode: 'contain',
   },
   cartItemMid: {
     width: '40%',

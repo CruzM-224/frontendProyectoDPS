@@ -3,6 +3,7 @@ import imageMonitor from '../../../assets/images/monitor.png';
 import useStore from '@/components/useStore';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { Link } from 'expo-router';
+import { useGlobalSearchParams } from 'expo-router';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
@@ -22,7 +23,6 @@ function getOfferPrice(price: string, discount: string) {
 
 
 function Element ({ image, text, descuento, originalPrice, description  }: ElementProps) {
-  
   const price = getOfferPrice(originalPrice, descuento);
 
   return(
@@ -53,10 +53,13 @@ function Element ({ image, text, descuento, originalPrice, description  }: Eleme
 export default function Tab() {
   
   const items = useStore((state) => state.items);
-  const category = 'Gaming'; // Cambia esto a la categoría deseada
+
+  // Obtener el id de la categoría seleccionada
+  const { id_category } = useGlobalSearchParams();
+  const categoryId = Number.parseInt(id_category);
 
   // Filtrar los productos por categoría
-  const filteredItems = items.filter(item => item.id_categoria === 2 || 1);
+  const filteredItems = items.filter(item => item.id_categoria === categoryId);
 
   return (
     <View style={styles.container}>

@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, Button, SafeAreaView } from 'react-native';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { SearchParams } from 'expo-router';
+import { useGlobalSearchParams } from 'expo-router';
 // Seguir con lo de parametros de navegacion
 
 const ProductScreen = () => {
   const [quantity, setQuantity] = useState(1);
   const [isFavorited, setIsFavorited] = useState(false);
+  const { title, price, description, imageUrl } = useGlobalSearchParams();
+
 
   const handleIncrease = () => {
     setQuantity(quantity + 1);
@@ -27,12 +29,12 @@ const ProductScreen = () => {
     <SafeAreaView style={styles.container}>
       <View style={styles.container}>
         <Image
-          source={{ uri: 'https://c1.neweggimages.com/productimage/nb640/AFJTD2307240EIMHJ68.jpg' }}
+          source={{ uri: imageUrl }}
           style={styles.productImage}
         />
 
         <View style={styles.productTitleContainer}>
-          <Text style={styles.productTitle}>Teclado AK-900 </Text>
+          <Text style={styles.productTitle}>{title} </Text>
           <TouchableOpacity onPress={toggleFavorite}>
             {isFavorited ? ( 
               <FontAwesome name="heart" size={30} color="red"  /> 
@@ -42,7 +44,7 @@ const ProductScreen = () => {
           </TouchableOpacity>
         </View>
 
-        <Text style={styles.productPrice}>$960.00</Text>
+        <Text style={styles.productPrice}>${price}</Text>
 
         <View style={styles.quantityContainer}>
           <TouchableOpacity onPress={handleDecrease} style={styles.quantityButton}>
@@ -59,15 +61,12 @@ const ProductScreen = () => {
         <View style={styles.productDetailContainer}>
           <Text style={styles.productDetailTitle}>Detalles del producto:</Text>
           <Text style={styles.productDetailText}>
-            El IMICE AK-900 está diseñado para soportar largas sesiones de juego y ofrece una durabilidad excepcional. El teclado está fabricado con materiales de alta calidad, lo que garantiza un rendimiento duradero. También cuenta con un cable trenzado que agrega resistencia adicional y evita que se enrede.
+            {description}
           </Text>
         </View>
       
         <TouchableOpacity style={styles.buttons}>
           <Text style={styles.addToCartText}>Añadir al carrito</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.buttons}>
-          <Text style={styles.addToCartText}>Volver</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -80,10 +79,12 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 10,
     backgroundColor: '#fff',
+    alignContent: 'center',
+    justifyContent: 'space-evenly',
   },
   productImage: {
     width: '100%',
-    height: 200,
+    height: 300,
     resizeMode: 'contain',
   },
   productTitleContainer: {

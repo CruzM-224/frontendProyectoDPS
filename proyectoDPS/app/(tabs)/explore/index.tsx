@@ -1,15 +1,27 @@
 import { View, Text, StyleSheet, Image, ScrollView, Pressable } from 'react-native';
 import imageMonitor from '../../../assets/images/monitor.png';
+import imagenComputer from '../../../assets/images/computer.png';
+import imagenGaming from '../../../assets/images/gaming.png';
+import imagenHardware from '../../../assets/images/hardware.png';
+import imagenSoftware from '../../../assets/images/software.png';
+import imagenMobile from '../../../assets/images/mobile.png';
+import imagenPeripherals from '../../../assets/images/peripherals.png';
 import { Link } from 'expo-router';
 
 interface CategoryProps {
   name: string;
   image: number;
+  id_category: number;
 }
 
-const Category = ({ name, image}: CategoryProps) => {
+const Category = ({ name, image, id_category}: CategoryProps) => {
   return (
-    <Link href='/explore/products' asChild>
+    <Link href={{
+      pathname: '/explore/products',
+      params: { 
+        id_category: id_category,
+      },
+    }} asChild>
       <Pressable style={styles.category}>
         <Image style={styles.categoryImage} source={image} />
         <Text style={styles.categoryText}>{name}</Text>
@@ -22,16 +34,14 @@ export default function Tab() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Categories</Text>
-      <ScrollView style={styles.categoriesList}>
-        <View style={styles.categoriesListContainer}>
-          <Category name='Computers' image={imageMonitor} />
-          <Category name='Gamers' image={imageMonitor} />
-          <Category name='Hardware' image={imageMonitor} />
-          <Category name='Software' image={imageMonitor} />
-          <Category name='Mobile' image={imageMonitor} />
-          <Category name='Peripherals' image={imageMonitor} />
+      <View style={styles.categoriesListContainer}>
+          <Category name='Computers' image={imagenComputer} id_category={0} />
+          <Category name='Gaming' image={imagenGaming} id_category={1} />
+          <Category name='Hardware' image={imagenHardware} id_category={2} />
+          <Category name='Software' image={imagenSoftware} id_category={3} />
+          <Category name='Mobile' image={imagenMobile} id_category={4} />
+          <Category name='Peripherals' image={imagenPeripherals} id_category={5} />
         </View>
-      </ScrollView>
     </View>
   );
 }
@@ -49,14 +59,14 @@ const styles = StyleSheet.create({
   },
   categoriesList: {
     width: '90%',
-    flexWrap: 'wrap',
     paddingVertical: 10,
+    backgroundColor: '#fff',
   },
   categoriesListContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     flexWrap: 'wrap',
-    width: '100%',
+    width: '90%',
   },
   category: {
     alignItems: 'center',
@@ -66,12 +76,14 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     width: 150,
     marginVertical: 10,
-    marginHorizontal: 5,
+    marginHorizontal: '2%',
     padding: 10,
+    height: 170,
+    justifyContent: 'center',
   },
   categoryImage: {
     width: 120,
-    height: 100,
+    height: 120,
   },
   categoryText: {
     marginTop: 10,
