@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
-import { Link } from 'expo-router';
+import { View, Text, TouchableOpacity, Image, StyleSheet, ActivityIndicator } from 'react-native';
+import { Link, useRouter } from 'expo-router';
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
 import {
@@ -8,7 +8,9 @@ import {
   onAuthStateChanged,
   signInWithCredential,
 } from 'firebase/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { auth } from '../../firebaseConfig';
+import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -19,42 +21,53 @@ interface getStartedProps {
 const LoginScreen: React.FC<getStartedProps> = () => {
   // Hooks moved inside the functional component
   const [userInfo, setUserInfo] = useState();
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
   const [request, response, promptAsync] = Google.useAuthRequest({
     responseType: 'id_token', 
     androidClientId: '463503113117-7e6ok04llhb5t5djdaqeo21n75dv4har.apps.googleusercontent.com',
     webClientId: '463503113117-hns5csl4i8ejdab576e7pof3qtp5drm0.apps.googleusercontent.com',
   });
 
+  const getLocalUser = async () => {
+    try{
+      setLoading(true);
+      const userJSON = await AsyncStorage.getItem("@user");
+      const userData = userJSON ? JSON.parse(userJSON) : null;
+      setUserInfo(userData);  
+    } catch(e){
+      console.log(e, "Error getting local user");
+    } finally {
+      setLoading(false);
+    }
+  }
+
   useEffect(() => {
-    console.log("Response:", response);
     if (response?.type === 'success') {
-        const { id_token } = response.params;
-        console.log("ID Token:", id_token); // Verifica que el token es correcto
-        if (id_token) {
-            const credential = GoogleAuthProvider.credential(id_token);
-            signInWithCredential(auth, credential)
-                .then((userCredential) => {
-                    console.log("User signed in:", userCredential);
-                })
-                .catch((error) => {
-                    console.error("Error signing in with credential", error);
-                });
-        } else {
-            console.error("ID Token is undefined or null");
-        }
+      const { id_token } = response.params;
+      const credential = GoogleAuthProvider.credential(id_token);
+      signInWithCredential(auth, credential)
     }
 }, [response]);
 
 
   useEffect(() => {
-    const unSub = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        console.log(JSON.stringify(user,null,2));
+    getLocalUser();
+    const unSub = onAuthStateChanged(auth, async (user) => {
+      if (user){
+        await AsyncStorage.setItem("@user", JSON.stringify(user));
+        console.log(JSON.stringify(user, null, 2));
+        if(loading){
+          <View>
+            <ActivityIndicator size="large" color="#0000ff" />
+          </View>
+        }
+        router.replace("/(tabs)/home");
       } else {
-        console.log("NO USER");
+        console.log('User not authenticated');
       }
-    });
-    return () => unSub();
+  })
+  return () => unSub();
   }, []);
 
   return (
