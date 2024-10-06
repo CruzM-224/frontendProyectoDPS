@@ -1,110 +1,77 @@
 import { create } from 'zustand';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-interface Item {
-    id: number;
-    name: string;
-    price: number;
-    image: string;
-}
+const useStore = create((set) => ({
+    // Items
+    items: [],
+    addItem: (item) => set((state) => ({ items: [...state.items, item] })),
+    setItems: (items) => set({ items }),
+    removeItems: () => set({ items: [] }),
 
-interface CartItem extends Item {
-    quantity: number; // Solo para el carrito
-}
-
-interface Store {
-    cart: CartItem[];
-    addToCart: (item: Item, quantity: number) => void;
-    removeFromCart: (id: number) => void; // Nueva función para remover
-    getItemQuantity: (id: number) => number;
-}
-
-const useStore = create<Store>((set) => ({
-    cart: [],
-    
-    // Función para agregar un item al carrito
-    addToCart: (item, quantity) => set((state) => {
-        const existingItemIndex = state.cart.findIndex(cartItem => cartItem.id === item.id);
-
-        if (existingItemIndex !== -1) {
-            // Si el item ya está en el carrito, actualiza la cantidad
-            const updatedCart = [...state.cart];
-            updatedCart[existingItemIndex].quantity += quantity;
-            return { cart: updatedCart };
+    // Cart
+    cartItems: [],
+    addCartItem: (item) => set((state) => {
+        const existingItem = state.cartItems.find((cartItem) => cartItem.id === item.id);
+        if (existingItem) {
+            return {
+                cartItems: state.cartItems.map((cartItem) =>
+                    cartItem.id === item.id ? { ...cartItem, quantity: cartItem.quantity + item.quantity } : cartItem
+                ),
+            };
         } else {
-            // Si no está, agrega el nuevo item al carrito
-            return { cart: [...state.cart, { ...item, quantity }] };
+            return { cartItems: [...state.cartItems, item] };
         }
     }),
+    setCartItems: (items) => set({ cartItems: items }),
+    removeCartItems: () => set({ cartItems: [] }),
+    removeCartItem: (id) => set((state) => ({ cartItems: state.cartItems.filter((item) => item.id !== id) })),
+    incrementCartItemByOne: (id) => set((state) => ({
+        cartItems: state.cartItems.map((item) =>
+            item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+        )
+    })),
+    decrementCartItemByOne: (id) => set((state) => ({
+        cartItems: state.cartItems.map((item) =>
+            item.id === id ? { ...item, quantity: item.quantity - 1 } : item
+        )
+    })),
 
-    // Función para remover un item del carrito
-    removeFromCart: (id: number) => set((state) => {
-        const existingItemIndex = state.cart.findIndex(cartItem => cartItem.id === id);
+    // Favourites
+    favouriteItems: [],
+    addFavouriteItem: (item) => set((state) => ({ favouriteItems: [...state.favouriteItems, item] })),
+    setFavouriteItems: (items) => set({ favouriteItems: items }),
+    removeFavouriteItems: () => set({ favouriteItems: [] }),
+    removeFavouriteItem: (id) => set((state) => ({ favouriteItems: state.favouriteItems.filter((item) => item.id !== id) })),
 
-        if (existingItemIndex !== -1) {
-            const updatedCart = [...state.cart];
-            updatedCart[existingItemIndex].quantity -= 1; // Reducir la cantidad
-
-            // Si la cantidad llega a 0, eliminar el item del carrito
-            if (updatedCart[existingItemIndex].quantity <= 0) {
-                updatedCart.splice(existingItemIndex, 1);
-            }
-
-            return { cart: updatedCart };
+    // Cart history
+    history: [],
+    fetchHistory: async () => {
+    try {
+        const existingHistory = await AsyncStorage.getItem('cartHistory');
+        if (existingHistory !== null) {
+        set({ history: JSON.parse(existingHistory) });
         }
-        return state; // Retorna el estado sin cambios si no se encontró el item
-    }),
+    } catch (e) {
+        console.log('Error getting history:', e);
+    }
+    },
+    addToHistory: async (newCart) => {
+    try {
+        const existingHistory = await AsyncStorage.getItem('cartHistory');
+        let updatedHistory = [];
 
-    // Función para obtener la cantidad de un item en el carrito
-    getItemQuantity: (id: number): number => {
-        const item = useStore.getState().cart.find(cartItem => cartItem.id === id);
-        return item ? item.quantity : 0;
+        if (existingHistory !== null) {
+        updatedHistory = JSON.parse(existingHistory);
+        }
+
+        updatedHistory.push(newCart);
+
+        await AsyncStorage.setItem('cartHistory', JSON.stringify(updatedHistory));
+        set({ history: updatedHistory });
+    } catch (e) {
+        console.log('Error adding to history:', e);
+    }
     },
 }));
 
 export default useStore;
-
-
-/*
-Ejemplo
-
-import React from 'react';
-import { View, Button, Text } from 'react-native';
-import useStore from './store';
-
-interface ProductProps {
-    item: {
-        id: number;
-        name: string;
-        price: number;
-        image: string;
-    };
-}
-
-const Product: React.FC<ProductProps> = ({ item }) => {
-    const addToCart = useStore(state => state.addToCart);
-    const removeFromCart = useStore(state => state.removeFromCart);
-    const quantity = useStore(state => state.getItemQuantity(item.id));
-
-    const handleAddToCart = () => {
-        addToCart(item, 1); // Agregar 1 al carrito
-    };
-
-    const handleRemoveFromCart = () => {
-        removeFromCart(item.id); // Remover 1 del carrito
-    };
-
-    return (
-        <View>
-            <Text>{item.name} - ${item.price.toFixed(2)}</Text>
-            <Text>Cantidad en carrito: {quantity}</Text>
-            <Button title="Agregar al carrito" onPress={handleAddToCart} />
-            {quantity > 0 && (
-                <Button title="Remover del carrito" onPress={handleRemoveFromCart} />
-            )}
-        </View>
-    );
-};
-
-export default Product;
-
-*/

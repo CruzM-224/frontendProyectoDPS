@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   View, 
   Text, 
@@ -17,54 +17,126 @@ import { StatusBar } from 'expo-status-bar';
 
 import imagenEjemplo from '../../../assets/images/home1.jpg';
 import { Link } from 'expo-router';
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQuery,
+} from '@tanstack/react-query';
+import useStore from '@/components/useStore';
+
+
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
-interface ElementProps {
-  image: number,
-  text: string,
-  price: number,
-  originalPrice?: number,
+const API_URL = 'http://192.168.0.10:8000/api/productos/get';
+
+// Solicitud de datos
+function useData(setLoading: (loading: boolean) => void) {
+  const { isLoading, error, data } = useQuery({
+    queryKey: ['products'],
+    queryFn: () =>
+      fetch(API_URL).then((res) => {
+        if (!res.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return res.json();
+      }),
+      staleTime: 0,
+  });
+
+  useEffect(() => {
+    if (!isLoading && !error) {
+      setLoading(false);
+      console.log(data);
+    }else if (error){
+      console.error("Error al cargar los datos", error);
+    }
+  }, [isLoading, error]);
+
+  return { isLoading, error, data };
 }
 
-function Element ({ image, text, price, originalPrice  }: ElementProps) {
+interface ElementProps {
+  id: number,
+  image: string,
+  text: string,
+  descuento: string,
+  originalPrice: string,
+  description: string,
+}
+
+function getOfferPrice(price: string, discount: string) {
+  const originalPrice = Number.parseFloat(price);
+  const discountPrice = Number.parseFloat(discount);
+  return (originalPrice - discountPrice).toFixed(2);
+}
+
+
+function Element ({ id, image, text, descuento, originalPrice, description  }: ElementProps) {
+  
+  const price = getOfferPrice(originalPrice, descuento);
+
   return(
-    <View style={styles.offer}>
-    <Image
-      style={styles.offerImage}
-      source={image}
-    />
-    <View style={styles.icons}>
-      <Pressable style={styles.favourites}>
-        <FontAwesome6 size={20} name="heart" color={'#000000'} />
+    <Link href={{
+      pathname: "/home/productScreen",
+      params: { 
+        id: id,
+        imageUrl: image, 
+        name: text, 
+        price: price, 
+        description: description
+      },
+    }} asChild>
+      <Pressable style={styles.offer}>
+        <Image
+          style={styles.offerImage}
+          source={{ uri: image }}
+        />
+        <View style={styles.icons}>
+          <Pressable style={styles.favourites}>
+            <FontAwesome6 size={20} name="heart" color={'#000000'} />
+          </Pressable>
+          <Pressable style={styles.seen}>
+            <FontAwesome6 size={20} name="eye" color={'#000000'} />
+          </Pressable>
+        </View>
+        <Text style={styles.offerText}>{text}</Text>
+        <View style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
+          <Text style={styles.offerPrice}>${price}</Text>
+          <Text style={styles.originalPrice}>${originalPrice}</Text>
+        </View>
+        <View style={styles.stars}>
+        </View>
       </Pressable>
-      <Pressable style={styles.seen}>
-        <FontAwesome6 size={20} name="eye" color={'#000000'} />
-      </Pressable>
-    </View>
-    <Text style={styles.offerText}>{text}</Text>
-    <View style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
-      <Text style={styles.offerPrice}>${price.toFixed(2)}</Text>
-      <Text style={styles.originalPrice}>${originalPrice?.toFixed(2)}</Text>
-    </View>
-    <View style={styles.stars}>
-    </View>
-  </View>
+    </Link>
   );
 }
 
-export default function Tab() {
-
+function App() {
+  const [loading, setLoading] = useState(true);
+  const items = useStore((state) => state.items);
   const [fontsLoaded] = useFonts({
     'Poppins-Regular': require('../../../assets/fonts/Poppins-Regular.ttf'),
   });
 
-  if (!fontsLoaded) {
+  const { isLoading, error, data } = useData(setLoading);
+
+  useEffect(() => {
+    if (data?.productos && items.length === 0) {
+      useStore.setState({ items: data.productos });
+      console.log('Datos almacenados en Zustand:', data.productos);
+    }
+  }, [data, items.length]);
+
+  if (!fontsLoaded || loading || isLoading) {
     return (
-      <ActivityIndicator size="large" color="#0000ff" />
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
     );
   }
+
 
   return (
     <SafeAreaProvider>
@@ -117,10 +189,10 @@ export default function Tab() {
             </View>
             <Text style={styles.offersTitle}>Ultimas ofertas</Text>
             <View style={styles.containerOffersElements}>
-              <Element image={imagenEjemplo} text={'Producto 1'} price={10.00} originalPrice={14.54}/>
-              <Element image={imagenEjemplo} text={'Producto 2'} price={34.00} originalPrice={55} />
-              <Element image={imagenEjemplo} text={'Producto 3'} price={36.99} originalPrice={45} />
-              <Element image={imagenEjemplo} text={'Producto 4'} price={12.00} originalPrice={15} />
+              <Element id={items[0].id} image={items[0].imagen} text={items[0].producto} descuento={items[0].descuento} originalPrice={items[0].precio} description={items[0].descripcion} />
+              <Element id={items[1].id} image={items[1].imagen} text={items[1].producto} descuento={items[1].descuento} originalPrice={items[1].precio} description={items[1].descripcion} />
+              <Element id={items[2].id} image={items[2].imagen} text={items[2].producto} descuento={items[2].descuento} originalPrice={items[2].precio} description={items[2].descripcion} />
+              <Element id={items[3].id} image={items[3].imagen} text={items[3].producto} descuento={items[3].descuento} originalPrice={items[3].precio} description={items[3].descripcion} />
             </View>
           </View>
           {/* line */}
@@ -220,6 +292,17 @@ export default function Tab() {
       </SafeAreaView>
     </SafeAreaProvider>
 
+  );
+}
+
+export default function Tab() {
+
+  const queryClient = new QueryClient();
+  
+  return (
+    <QueryClientProvider client={queryClient}>
+      <App />
+    </QueryClientProvider>
   );
 }
 
@@ -342,6 +425,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
     alignItems: 'center',
     position: 'relative',
+    borderWidth: 1,
+    borderColor: 'lightgrey', 
+    borderRadius: 10,
   },
   offerImage: {
     width: '100%',
@@ -351,6 +437,7 @@ const styles = StyleSheet.create({
     aspectRatio: '120/150',
     borderRadius: 10,
     marginTop: 5,
+    resizeMode: 'contain',
   },
   icons: {
     position: 'absolute',
