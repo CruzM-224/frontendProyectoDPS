@@ -53,6 +53,7 @@ export default function Tab() {
         async () => {
           await signOut(auth);
           await AsyncStorage.removeItem("@user");
+          console.log('Logged out');
         }
       }>
         <View style={styles.iconSignOut}>

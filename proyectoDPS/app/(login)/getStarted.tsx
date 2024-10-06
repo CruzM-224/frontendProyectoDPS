@@ -47,6 +47,10 @@ const LoginScreen: React.FC<getStartedProps> = () => {
       const { id_token } = response.params;
       const credential = GoogleAuthProvider.credential(id_token);
       signInWithCredential(auth, credential)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log('Logged in with Google: ', user.displayName);
+      })
     }
 }, [response]);
 

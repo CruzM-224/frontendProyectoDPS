@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Stack } from "expo-router";
 import SplashScreen from "../components/SplashScreen"; // Tu pantalla de carga
 import { auth } from "../firebaseConfig"; // Firebase auth si usas firebase
+import { Header } from "react-native/Libraries/NewAppScreen";
 
 export default function Layout() {
   const [appIsReady, setAppIsReady] = useState(false);
@@ -38,15 +39,17 @@ export default function Layout() {
   if (!loggedIn) {
     return (
       <Stack>
-        <Stack.Screen name="(login)" options={{ headerShown: false }} />
+        <Stack.Screen name="(login)" options={{headerShown: false}} />
       </Stack>
     );
   }
 
   // Mostrar la app principal si el usuario está autenticado
-  return (
-    <Stack>
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-    </Stack>
-  );
+  if (loggedIn){
+    return (
+      <Stack>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      </Stack>
+    );
+  }
 }

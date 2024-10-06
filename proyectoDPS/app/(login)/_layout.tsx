@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Stack } from 'expo-router/stack';
-import SplashScreen from '../../components/LoginScreens/SplashScreen';
-import PrincipalLogin from '../../components/LoginScreens/PrincipalLogin';
-import GetStarted from '../../components/LoginScreens/GetStarted';
+//import SplashScreen from '../../components/LoginScreens/SplashScreen';
+//import PrincipalLogin from '../../components/LoginScreens/PrincipalLogin';
+//import GetStarted from '../../components/LoginScreens/GetStarted';
 
 
 
