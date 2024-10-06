@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, Pressable } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, Pressable, Modal } from 'react-native';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import Modal from 'react-native-modal';
 import useStore from '@/components/useStore';
 
 interface AccountSettingProps {
@@ -54,7 +53,12 @@ export default function Tab() {
         <Pressable onPress={toggleModal}>
           <AccountSetting icon="truck-ramp-box" text="My orders" />
         </Pressable>
-        <Modal isVisible={isModalVisible} onBackdropPress={toggleModal}>
+        <Modal 
+          visible={isModalVisible}
+          transparent={true}
+          animationType='slide'
+          onRequestClose={toggleModal}
+        >
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Order History</Text>
             <FlatList
@@ -72,6 +76,7 @@ export default function Tab() {
                       <Text style={styles.cartItemQuantity}>Total: ${(Number.parseFloat(cartItem.price) * cartItem.quantity).toFixed(2)}</Text>
                     </View>
                   ))}
+                  <Text style={styles.cartItemTotalPrice}>Total: ${item.total.toFixed(2)}</Text>
                 </View>
               )}
             />
@@ -159,10 +164,11 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     backgroundColor: 'white',
-    padding: 22,
+    paddingVertical: 20,
+    paddingHorizontal: 5,
     borderRadius: 8,
     alignItems: 'center',
-    height: '90%',
+    height: '100%',
   },
   modalTitle: {
     fontSize: 20,
@@ -175,7 +181,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ddd',
   },
   cartItemDate: {
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 8,
   },
@@ -187,15 +193,20 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
+  cartItemQuantity: {
+    fontSize: 16,
+  },
   cartItemPrice: {
     fontSize: 16,
-    color: 'green',
   },
-  cartItemQuantity: {
-    fontSize: 14,
+  cartItemTotalPrice: {
+    fontSize: 20,
+    paddingLeft: 16,
+    fontWeight: 'bold',
+    color: '#DB4444',
   },
   closeButton: {
-    backgroundColor: '#000',
+    backgroundColor: '#DB4444',
     padding: 16,
     borderRadius: 8,
     alignItems: 'center',

@@ -81,6 +81,7 @@ export default function Tab() {
         id: Date.now(), // Usar timestamp como ID único
         items: cartItems,
         date: new Date().toISOString(),
+        total: cartItems.reduce((acc, item) => acc + (Number.parseFloat(item.price) * item.quantity), 0),
       };
 
       // Agregar el carrito actual al historial
@@ -166,6 +167,7 @@ const styles = StyleSheet.create({
   cartItemImage: {
     width: 120,
     height: 100,
+    resizeMode: 'contain',
   },
   cartItemMid: {
     width: '30%',

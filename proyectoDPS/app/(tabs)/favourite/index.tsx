@@ -121,6 +121,7 @@ const styles = StyleSheet.create({
   favouriteItemImage: {
     width: 120,
     height: 100,
+    resizeMode: 'contain',
   },
   btn: {
     padding: 10,

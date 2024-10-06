@@ -63,9 +63,29 @@ export default function Tab() {
   // Filtrar los productos por categoría
   const filteredItems = items.filter(item => item.id_categoria === categoryId);
 
+  const getTitle = (categoryId) => {
+    switch (categoryId) {
+      case 0:
+        return 'Computers';
+      case 1:
+        return 'Gaming';
+      case 2:
+        return 'Hardware';
+      case 3:
+        return 'Software';
+      case 4:
+        return 'Mobile';
+      case 5:
+        return 'Peripherals';
+      default:
+        return 'All categories';
+    }
+  };
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Categories</Text>
+      <Text style={styles.title}>{getTitle(categoryId)}
+      </Text>
       <FlatList
         data={filteredItems}
         keyExtractor={(item) => item.id.toString()}
@@ -127,6 +147,7 @@ const styles = StyleSheet.create({
     aspectRatio: '120/150',
     borderRadius: 10,
     marginTop: 5,
+    resizeMode: 'contain',
   },
   offerText: {
     fontSize: 12,

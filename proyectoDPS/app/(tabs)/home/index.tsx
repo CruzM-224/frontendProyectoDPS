@@ -437,6 +437,7 @@ const styles = StyleSheet.create({
     aspectRatio: '120/150',
     borderRadius: 10,
     marginTop: 5,
+    resizeMode: 'contain',
   },
   icons: {
     position: 'absolute',

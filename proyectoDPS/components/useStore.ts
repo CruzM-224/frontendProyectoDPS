@@ -47,7 +47,7 @@ const useStore = create((set) => ({
     history: [],
     fetchHistory: async () => {
     try {
-        const existingHistory = await AsyncStorage.getItem('history');
+        const existingHistory = await AsyncStorage.getItem('cartHistory');
         if (existingHistory !== null) {
         set({ history: JSON.parse(existingHistory) });
         }
@@ -57,7 +57,7 @@ const useStore = create((set) => ({
     },
     addToHistory: async (newCart) => {
     try {
-        const existingHistory = await AsyncStorage.getItem('history');
+        const existingHistory = await AsyncStorage.getItem('cartHistory');
         let updatedHistory = [];
 
         if (existingHistory !== null) {
@@ -66,7 +66,7 @@ const useStore = create((set) => ({
 
         updatedHistory.push(newCart);
 
-        await AsyncStorage.setItem('history', JSON.stringify(updatedHistory));
+        await AsyncStorage.setItem('cartHistory', JSON.stringify(updatedHistory));
         set({ history: updatedHistory });
     } catch (e) {
         console.log('Error adding to history:', e);
