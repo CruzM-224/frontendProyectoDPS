@@ -6,7 +6,7 @@ const SplashScreen = () => {
     <View style={styles.container}>
       <Image
         style={styles.logo}
-        source={require('../../assets/images/Logotipo-UDB-Tech-shop.png')}
+        source={require('../assets/images/Logotipo-UDB-Tech-shop.png')}
       />
     </View>
   );

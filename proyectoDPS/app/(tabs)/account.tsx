@@ -4,6 +4,10 @@ import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import useStore from '@/components/useStore';
 
+import { auth } from '../../firebaseConfig';
+import { signOut } from 'firebase/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 interface AccountSettingProps {
   icon: string,
   text: string,
@@ -93,7 +97,13 @@ export default function Tab() {
         <AccountSetting icon="circle-question" text="Help" />
         <AccountSetting icon="circle-info" text="About" />
       </View>
-      <TouchableOpacity style={styles.logOutButton}>
+      <TouchableOpacity style={styles.logOutButton} onPress={
+        async () => {
+          await signOut(auth);
+          await AsyncStorage.removeItem("@user");
+          console.log('Logged out');
+        }
+      }>
         <View style={styles.iconSignOut}>
           <FontAwesome name="sign-out" size={24} color="white" />
         </View>
