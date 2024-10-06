@@ -6,14 +6,19 @@ import { useGlobalSearchParams } from 'expo-router';
 import useStore from '@/components/useStore';
 
 const ProductScreen = () => {
+  const { id, name, price, description, imageUrl } = useGlobalSearchParams();
   const [quantity, setQuantity] = useState(1);
-  const [isFavorited, setIsFavorited] = useState(false);
-  const { id, title, price, description, imageUrl } = useGlobalSearchParams();
+  const favouriteItems = useStore((state) => state.favouriteItems);
+  const [isFavorited, setIsFavorited] = useState(() => {
+    return favouriteItems.some((item) => item.id === id);
+  });
   const addCartItem = useStore((state) => state.addCartItem);
+  const addFavouriteItem = useStore((state) => state.addFavouriteItem);
+  const removeFavouriteItem = useStore((state) => state.removeFavouriteItem);
   
   const item = {
     id: id,
-    title: title,
+    name: name,
     price: price,
     description: description,
     imageUrl: imageUrl,
@@ -31,6 +36,13 @@ const ProductScreen = () => {
   };
 
   const toggleFavorite = () => {
+    if (!isFavorited) {
+      addFavouriteItem(item);
+      console.log('Item added to favourites:', item);
+    } else {
+      removeFavouriteItem(item.id);
+      console.log('Item removed from favourites:', item);
+    }
     setIsFavorited(!isFavorited); 
   };
 
@@ -47,7 +59,7 @@ const ProductScreen = () => {
         />
 
         <View style={styles.productTitleContainer}>
-          <Text style={styles.productTitle}>{title} </Text>
+          <Text style={styles.productTitle}>{name} </Text>
           <TouchableOpacity onPress={toggleFavorite}>
             {isFavorited ? ( 
               <FontAwesome name="heart" size={30} color="red"  /> 

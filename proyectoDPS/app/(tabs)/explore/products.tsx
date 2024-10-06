@@ -9,6 +9,7 @@ const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
 interface ElementProps {
+  id: number,
   image: string,
   text: string,
   descuento: string,
@@ -22,15 +23,16 @@ function getOfferPrice(price: string, discount: string) {
 }
 
 
-function Element ({ image, text, descuento, originalPrice, description  }: ElementProps) {
+function Element ({ id, image, text, descuento, originalPrice, description  }: ElementProps) {
   const price = getOfferPrice(originalPrice, descuento);
 
   return(
     <Link href={{
       pathname: "/explore/productScreen",
-      params: { 
+      params: {
+        id: id,
         imageUrl: image, 
-        title: text, 
+        name: text, 
         price: price, 
         description: description
       },
@@ -69,6 +71,7 @@ export default function Tab() {
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <Element
+            id={item.id}
             image={item.imagen}
             text={item.producto}
             descuento={item.descuento}

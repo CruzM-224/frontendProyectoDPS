@@ -34,6 +34,13 @@ const useStore = create((set) => ({
             item.id === id ? { ...item, quantity: item.quantity - 1 } : item
         )
     })),
+
+    // Favourites
+    favouriteItems: [],
+    addFavouriteItem: (item) => set((state) => ({ favouriteItems: [...state.favouriteItems, item] })),
+    setFavouriteItems: (items) => set({ favouriteItems: items }),
+    removeFavouriteItems: () => set({ favouriteItems: [] }),
+    removeFavouriteItem: (id) => set((state) => ({ favouriteItems: state.favouriteItems.filter((item) => item.id !== id) })),
 }));
 
 export default useStore;

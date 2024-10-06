@@ -83,7 +83,7 @@ function Element ({ id, image, text, descuento, originalPrice, description  }: E
       params: { 
         id: id,
         imageUrl: image, 
-        title: text, 
+        name: text, 
         price: price, 
         description: description
       },

@@ -1,8 +1,8 @@
-import { View, Text, StyleSheet, Image, Pressable, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, Pressable, ScrollView, TouchableOpacity, FlatList } from 'react-native';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
-import { FlatList } from 'react-native-reanimated/lib/typescript/Animated';
-import imageMonitor from '../../assets/images/monitor.png';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import useStore from '@/components/useStore';
+import { Link } from 'expo-router';
 
 
 interface FavouriteItemProps {
@@ -10,7 +10,8 @@ interface FavouriteItemProps {
     id: number;
     name: string;
     price: number;
-    image: string;
+    imageUrl: string;
+    description: string,
   };
 }
 
@@ -18,24 +19,38 @@ interface FavouriteItemProps {
 
 const FavouriteItem = ({ item }: FavouriteItemProps) => {
   return(
-    <View style={styles.favouriteItem}>
-      <View style={styles.favouriteItemName}>
-        <Text style={styles.favouriteItemNameText}>{item.name}</Text>
-      </View>
-      <View style={styles.favouriteItemBody}>
-        <View style={styles.favouriteItemLeft}>
-          <Image style={styles.favouriteItemImage} source={imageMonitor} />
+    <Link href={{
+      pathname: "/favourite/productScreen",
+      params: {
+        id: item.id,
+        imageUrl: item.imageUrl, 
+        name: item.name, 
+        price: item.price, 
+        description: item.description
+      },
+    }} asChild>
+      <Pressable style={styles.favouriteItem}>
+        <View style={styles.favouriteItemName}>
+          <Text style={styles.favouriteItemNameText}>{item.name}</Text>
         </View>
-        <View style={styles.favouriteItemRight}>
-          <Text style={styles.price}>${item.price.toFixed(2)}</Text>
-          <FontAwesome6 name="angle-right" size={24} color="black" />
+        <View style={styles.favouriteItemBody}>
+          <View style={styles.favouriteItemLeft}>
+            <Image style={styles.favouriteItemImage} source={{ uri: item.imageUrl }} />
+          </View>
+          <View style={styles.favouriteItemRight}>
+            <Text style={styles.price}>${item.price}</Text>
+            <FontAwesome6 name="angle-right" size={24} color="black" />
+          </View>
         </View>
-      </View>
-    </View>
+      </Pressable>
+    </Link>
   );
 }
 
 export default function Tab() {
+
+  const favouriteItems = useStore((state) => state.favouriteItems);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -44,38 +59,12 @@ export default function Tab() {
       <View style={styles.containerBody}>
 
         {/* Migrar a flatlist una vez se pueda pedir la solicitud por servidor */}
-        <ScrollView>
-          <FavouriteItem item={{
-            id: 1,
-            name: 'Monitor',
-            price: 100,
-            image: imageMonitor
-          }} />
-          <FavouriteItem item={{
-            id: 2,
-            name: 'Monitor 2',
-            price: 123.45,
-            image: imageMonitor
-          }} />
-          <FavouriteItem item={{
-            id: 3,
-            name: 'Tele',
-            price: 344.1,
-            image: imageMonitor
-          }} />
-          <FavouriteItem item={{
-            id: 4,
-            name: 'Tele 2',
-            price: 499.99,
-            image: imageMonitor
-          }} />
-          <FavouriteItem item={{
-            id: 5,
-            name: 'LED 4K',
-            price: 356,
-            image: imageMonitor
-          }} />
-        </ScrollView>
+
+        <FlatList
+          data={favouriteItems}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => <FavouriteItem item={item} />}
+        />
       </View>
     </View>
   );

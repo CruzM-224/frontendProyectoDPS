@@ -3,7 +3,7 @@ import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import imageMonitor from '../../assets/images/monitor.png';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import useStore from '@/components/useStore';
-
+import { useState } from 'react';
 
 interface CartItemProps {
   item: {
@@ -37,7 +37,11 @@ const CartItem = ({ item }: CartItemProps) => {
             styles.btn,
             pressed && styles.btnPressed
           ]}
-            onPress={() => decrementCartItem(item.id)}
+            onPress={() => {
+              if (item.quantity > 1) {
+                decrementCartItem(item.id);
+              }
+            }}
           >
             <FontAwesome6 name="minus" size={24} color="black" />
           </Pressable>
@@ -52,6 +56,8 @@ const CartItem = ({ item }: CartItemProps) => {
           </Pressable>
         </View>
         <View style={styles.cartItemRight}>
+          <Text style={styles.price}>${finalPrice}</Text>
+
           <Pressable style={({ pressed }) => [
             styles.btnTrash,
             pressed && styles.btnPressed
@@ -60,7 +66,6 @@ const CartItem = ({ item }: CartItemProps) => {
           >
             <FontAwesome6 name="trash" size={24} color="black" />
           </Pressable>
-          <Text style={styles.price}>${finalPrice}</Text>
         </View>
       </View>
     </View>
@@ -82,12 +87,12 @@ export default function Tab() {
           data={cartItems}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => <CartItem item={item} />}
-          contentContainerStyle={styles.cartContainer}
         />
       </View>
+      <Text style={styles.price}>Total: ${cartItems.reduce((acc, item) => acc + (Number.parseFloat(item.price) * item.quantity), 0).toFixed(2)}</Text>
       <TouchableOpacity style={styles.checkout}>
-          <Text style={styles.checkoutText}>Go to checkout</Text>
-        </TouchableOpacity>
+        <Text style={styles.checkoutText}>Go to checkout</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -134,7 +139,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   cartItemLeft: {
-    width: '40%',
+    width: '35%',
     alignItems: 'center',
     height: '100%',
   },
@@ -143,18 +148,18 @@ const styles = StyleSheet.create({
     height: 100,
   },
   cartItemMid: {
-    width: '40%',
+    width: '30%',
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
   },
   btn: {
-    padding: 10,
+    padding: 5,
     backgroundColor: '#ddd',
     borderRadius: 5,
   },
   btnPressed: {
-    padding: 10,
+    padding: 5,
     backgroundColor: 'darkgray',
     borderRadius: 5,
   },
@@ -162,16 +167,15 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   cartItemRight: {
-    width: '20%',
+    width: '35%',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
+    flexDirection: 'row',
   },
   btnTrash: {
-    padding: 10,
-    alignSelf: 'flex-end',
+    padding: 5,
   },
   price: {
-    paddingTop: 20,
     fontSize: 16,
     fontWeight: 'bold',
   },
