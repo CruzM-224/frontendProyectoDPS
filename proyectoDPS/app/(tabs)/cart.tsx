@@ -1,9 +1,7 @@
 import { View, Text, StyleSheet, Image, Pressable, FlatList, TouchableOpacity } from 'react-native';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
-import imageMonitor from '../../assets/images/monitor.png';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
 import useStore from '@/components/useStore';
-import { useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface CartItemProps {
   item: {
@@ -74,6 +72,28 @@ const CartItem = ({ item }: CartItemProps) => {
 
 export default function Tab() {
   const cartItems = useStore((state) => state.cartItems);
+  const removeCartItems = useStore((state) => state.removeCartItems);
+  const addToHistory = useStore((state) => state.addToHistory);
+
+  const handleCheckout = async () => {
+    try {
+      const newCart = {
+        id: Date.now(), // Usar timestamp como ID único
+        items: cartItems,
+        date: new Date().toISOString(),
+      };
+
+      // Agregar el carrito actual al historial
+      await addToHistory(newCart);
+
+      // Vaciar el carrito actual
+      removeCartItems();
+      alert('Checkout successful!');
+    } catch (error) {
+      console.error('Error saving cart to AsyncStorage:', error);
+      alert('Failed. Please try again.');
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -90,7 +110,7 @@ export default function Tab() {
         />
       </View>
       <Text style={styles.price}>Total: ${cartItems.reduce((acc, item) => acc + (Number.parseFloat(item.price) * item.quantity), 0).toFixed(2)}</Text>
-      <TouchableOpacity style={styles.checkout}>
+      <TouchableOpacity style={styles.checkout} onPress={handleCheckout}>
         <Text style={styles.checkoutText}>Go to checkout</Text>
       </TouchableOpacity>
     </View>

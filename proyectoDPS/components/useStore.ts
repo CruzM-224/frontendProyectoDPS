@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const useStore = create((set) => ({
     // Items
@@ -41,6 +42,36 @@ const useStore = create((set) => ({
     setFavouriteItems: (items) => set({ favouriteItems: items }),
     removeFavouriteItems: () => set({ favouriteItems: [] }),
     removeFavouriteItem: (id) => set((state) => ({ favouriteItems: state.favouriteItems.filter((item) => item.id !== id) })),
+
+    // Cart history
+    history: [],
+    fetchHistory: async () => {
+    try {
+        const existingHistory = await AsyncStorage.getItem('history');
+        if (existingHistory !== null) {
+        set({ history: JSON.parse(existingHistory) });
+        }
+    } catch (e) {
+        console.log('Error getting history:', e);
+    }
+    },
+    addToHistory: async (newCart) => {
+    try {
+        const existingHistory = await AsyncStorage.getItem('history');
+        let updatedHistory = [];
+
+        if (existingHistory !== null) {
+        updatedHistory = JSON.parse(existingHistory);
+        }
+
+        updatedHistory.push(newCart);
+
+        await AsyncStorage.setItem('history', JSON.stringify(updatedHistory));
+        set({ history: updatedHistory });
+    } catch (e) {
+        console.log('Error adding to history:', e);
+    }
+    },
 }));
 
 export default useStore;
