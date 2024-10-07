@@ -80,7 +80,6 @@ const useStore = create((set) => ({
         try {
             const API_POST_URL = 'http://192.168.0.8:8000/api/usuarios/store';  
 
-            // Preparar los datos a enviar a la API
             const userData = {
                 nombre,
                 apellido,
@@ -91,7 +90,6 @@ const useStore = create((set) => ({
                 direccion,
             };
 
-            // Enviar la solicitud a la API
             const response = await fetch(API_POST_URL, {
                 method: 'POST',
                 headers: {
@@ -112,7 +110,6 @@ const useStore = create((set) => ({
                 const storedUsers = await AsyncStorage.getItem('registeredUsers');
                 let users = storedUsers ? JSON.parse(storedUsers) : [];
 
-                // Crear el nuevo usuario
                 const newUser = {
                     nombre,
                     apellido,
@@ -124,10 +121,8 @@ const useStore = create((set) => ({
                 };
                 users.push(newUser);
 
-                // Guardar la lista actualizada en AsyncStorage
                 await AsyncStorage.setItem('registeredUsers', JSON.stringify(users));
 
-                // Actualizar el estado en Zustand
                 set({ registeredUsers: users });
 
                 return { success: true, message: 'User registered successfully' };

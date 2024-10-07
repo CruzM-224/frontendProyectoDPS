@@ -5,9 +5,9 @@ import useStore from '../../components/useStore';
 
 const SignUpScreen = () => {
   const router = useRouter();
-  const registerUser = useStore((state) => state.registerUser); // Extraemos el método de registro del store
+  const registerUser = useStore((state) => state.registerUser); 
 
-  // Definimos el estado para todos los campos necesarios
+  
   const [nombre, setNombre] = useState('');
   const [apellido, setApellido] = useState('');
   const [dui, setDui] = useState('');
@@ -20,14 +20,14 @@ const SignUpScreen = () => {
   const validateInputs = async () => {
     let validationErrors = {};
 
-    // Validar los campos
+    
     if (!nombre.trim()) {
       validationErrors.nombre = 'Nombre es requerido';
     }
     if (!apellido.trim()) {
       validationErrors.apellido = 'Apellido es requerido';
     }
-    // Validar el campo DUI
+    
     if (!dui.trim()) {
       validationErrors.dui = 'DUI es requerido';
     } else if (!/^\d{10}$/.test(dui)) {
@@ -54,7 +54,7 @@ const SignUpScreen = () => {
 
     setErrors(validationErrors);
 
-    // Si no hay errores, proceder al registro
+    
     if (Object.keys(validationErrors).length === 0) {
       const result = await registerUser(nombre, apellido, dui, telefono, email, password, direccion);
       console.log(result);
@@ -96,7 +96,7 @@ const SignUpScreen = () => {
           style={styles.input}
           value={dui}
           onChangeText={setDui}
-          keyboardType="numeric" // Asegura que solo se ingresen números
+          keyboardType="numeric" 
         />
         {errors.dui && <Text style={styles.errorText}>{errors.dui}</Text>}
       </View>
@@ -108,7 +108,7 @@ const SignUpScreen = () => {
           style={styles.input}
           value={telefono}
           onChangeText={setTelefono}
-          keyboardType="phone-pad" // Muestra el teclado de números
+          keyboardType="phone-pad" 
         />
         {errors.telefono && <Text style={styles.errorText}>{errors.telefono}</Text>}
       </View>
