@@ -46,31 +46,109 @@ const useStore = create((set) => ({
     // Cart history
     history: [],
     fetchHistory: async () => {
-    try {
-        const existingHistory = await AsyncStorage.getItem('cartHistory');
-        if (existingHistory !== null) {
-        set({ history: JSON.parse(existingHistory) });
+        try {
+            const existingHistory = await AsyncStorage.getItem('cartHistory');
+            if (existingHistory !== null) {
+                set({ history: JSON.parse(existingHistory) });
+            }
+        } catch (e) {
+            console.log('Error getting history:', e);
         }
-    } catch (e) {
-        console.log('Error getting history:', e);
-    }
     },
     addToHistory: async (newCart) => {
-    try {
-        const existingHistory = await AsyncStorage.getItem('cartHistory');
-        let updatedHistory = [];
+        try {
+            const existingHistory = await AsyncStorage.getItem('cartHistory');
+            let updatedHistory = [];
 
-        if (existingHistory !== null) {
-        updatedHistory = JSON.parse(existingHistory);
+            if (existingHistory !== null) {
+                updatedHistory = JSON.parse(existingHistory);
+            }
+
+            updatedHistory.push(newCart);
+
+            await AsyncStorage.setItem('cartHistory', JSON.stringify(updatedHistory));
+            set({ history: updatedHistory });
+        } catch (e) {
+            console.log('Error adding to history:', e);
         }
+    },
 
-        updatedHistory.push(newCart);
+    // Usuarios registrados
+    registeredUsers: [],
 
-        await AsyncStorage.setItem('cartHistory', JSON.stringify(updatedHistory));
-        set({ history: updatedHistory });
-    } catch (e) {
-        console.log('Error adding to history:', e);
-    }
+    registerUser: async (nombre, apellido, dui, telefono, email, password, direccion) => { 
+        try {
+            const API_POST_URL = 'http://192.168.0.8:8000/api/usuarios/store';  
+
+            // Preparar los datos a enviar a la API
+            const userData = {
+                nombre,
+                apellido,
+                dui,
+                telefono,
+                email,
+                password,
+                direccion,
+            };
+
+            // Enviar la solicitud a la API
+            const response = await fetch(API_POST_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(userData), 
+            });
+
+            if (!response.ok) {
+                const message = await response.text(); 
+                return { success: false, message };
+            }
+
+            const result = await response.json(); 
+
+            // Comprobar si la respuesta es válida
+            if (result && result.id) {
+                const storedUsers = await AsyncStorage.getItem('registeredUsers');
+                let users = storedUsers ? JSON.parse(storedUsers) : [];
+
+                // Crear el nuevo usuario
+                const newUser = {
+                    nombre,
+                    apellido,
+                    dui,
+                    telefono,
+                    email,
+                    password,
+                    direccion,
+                };
+                users.push(newUser);
+
+                // Guardar la lista actualizada en AsyncStorage
+                await AsyncStorage.setItem('registeredUsers', JSON.stringify(users));
+
+                // Actualizar el estado en Zustand
+                set({ registeredUsers: users });
+
+                return { success: true, message: 'User registered successfully' };
+            } else {
+                return { success: false, message: 'Error registering user, invalid response from server.' };
+            }
+        } catch (e) {
+            console.log('Error registering user:', e);
+            return { success: false, message: 'Error registering user' };
+        }
+    },
+
+    fetchRegisteredUsers: async () => {
+        try {
+            const storedUsers = await AsyncStorage.getItem('registeredUsers');
+            if (storedUsers) {
+                set({ registeredUsers: JSON.parse(storedUsers) });
+            }
+        } catch (e) {
+            console.log('Error fetching users:', e);
+        }
     },
 }));
 

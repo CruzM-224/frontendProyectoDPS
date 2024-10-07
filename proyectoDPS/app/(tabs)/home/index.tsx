@@ -29,7 +29,7 @@ import useStore from '@/components/useStore';
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
-const API_URL = 'http://192.168.0.10:8000/api/productos/get';
+const API_URL = 'http://192.168.0.8:8000/api/productos/get';
 
 // Solicitud de datos
 function useData(setLoading: (loading: boolean) => void) {
