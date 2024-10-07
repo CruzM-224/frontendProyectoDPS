@@ -72,6 +72,10 @@ const useStore = create((set) => ({
         console.log('Error adding to history:', e);
     }
     },
+
+    //location
+    location: null,
+    setLocation: (location) => set({ location }),
 }));
 
 export default useStore;

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Dimensions, StyleSheet, Image, Platform, KeyboardAvoidingView, ScrollView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Dimensions, StyleSheet, Image, Platform, KeyboardAvoidingView, Modal, Button, Pressable } from 'react-native';
 import DropdownPicker from 'react-native-dropdown-picker';
-import { SafeAreaView } from 'react-native-safe-area-context'; 
+import { SafeAreaView } from 'react-native-safe-area-context';
+import useStore from '@/components/useStore';
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
@@ -32,6 +33,22 @@ const LocationScreen = () => {
     setValue(item.value);
   };
 
+  const setLocation = useStore((state) => state.setLocation);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+
+  const handleConfirm = () => {
+    if (!value || !address) {
+      setModalMessage('Por favor, llene todos los campos');
+      setModalVisible(true);
+      return;
+    } else {
+      setLocation(`${value}, ${address}`);
+      setModalMessage(`Ubicación guardada: ${value}, ${address}`);
+      setModalVisible(true);
+    }
+  };
+
   return (
     <KeyboardAvoidingView
       style={styles.container}
@@ -48,6 +65,7 @@ const LocationScreen = () => {
       <View style={styles.inputContainerDropdown}>
         <Text style={styles.label}>Departamento de:</Text>
         <DropdownPicker
+          style={{ borderColor: '#ccc' }}
           open={open}
           value={value}
           items={items}
@@ -79,9 +97,32 @@ const LocationScreen = () => {
         />
       </View>
 
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={handleConfirm}>
         <Text style={styles.buttonText}>Confirmar</Text>
       </TouchableOpacity>
+
+      {/*Modal*/}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>{modalMessage}</Text>
+            <Pressable
+              style={styles.button}
+              onPress={() => setModalVisible(!modalVisible)}
+            >
+              <Text style={styles.buttonText}>Cerrar</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
+
     </KeyboardAvoidingView>
   );
 };
@@ -116,10 +157,36 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
     borderColor: '#ccc',
+    borderRadius: 6,
     padding: 10,
   },
   inputContainerDropdown: {
     marginBottom: 10,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
   },
   button: {
     backgroundColor: 'red',

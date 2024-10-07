@@ -93,14 +93,6 @@ function Element ({ id, image, text, descuento, originalPrice, description  }: E
           style={styles.offerImage}
           source={{ uri: image }}
         />
-        <View style={styles.icons}>
-          <Pressable style={styles.favourites}>
-            <FontAwesome6 size={20} name="heart" color={'#000000'} />
-          </Pressable>
-          <Pressable style={styles.seen}>
-            <FontAwesome6 size={20} name="eye" color={'#000000'} />
-          </Pressable>
-        </View>
         <Text style={styles.offerText}>{text}</Text>
         <View style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
           <Text style={styles.offerPrice}>${price}</Text>
@@ -114,6 +106,7 @@ function Element ({ id, image, text, descuento, originalPrice, description  }: E
 }
 
 function App() {
+  const location = useStore((state) => state.location);
   const [loading, setLoading] = useState(true);
   const items = useStore((state) => state.items);
   const [fontsLoaded] = useFonts({
@@ -154,20 +147,9 @@ function App() {
             <Link href="/home/location" asChild>
               <Pressable style={styles.location}>
                 <FontAwesome6 name="location-dot" size={24} color="black" />
-                <Text style={styles.locationText}>San Salvador, El Salvador</Text>
+                <Text style={styles.locationText}>{location || 'Ingrese su ubicacion'}</Text>
               </Pressable>
             </Link>
-          </View>
-    
-          {/* Search */}
-          <View style={styles.containerSearch}>
-            <View style={styles.search}>
-              <FontAwesome6 name="magnifying-glass" size={24} color="black" />
-              <TextInput
-                style={styles.searchInput}
-                placeholder="Busca en la tienda" 
-              />
-            </View>
           </View>
     
           {/* image */}
@@ -206,50 +188,94 @@ function App() {
             </View>
             <Text style={styles.offersTitle}>Recien llegado</Text>
             <View style={styles.containerNewProducts}>
-              <View style={styles.containerMainNewProducts}>
-                <View style={styles.containerMainNewProductsText}>
-                  <Text style={{ color: 'white', fontFamily: 'Poppins-Regular', fontSize: 18, width: '90%' }}>Playstation 5</Text>
-                  <Text style={{ color: 'white', fontFamily: 'Poppins-Regular', fontSize: 12, textShadowColor: 'black', textShadowRadius: 15, width: '60%'  }}>Black and white version of PS5 coming out on sale.</Text>
-                  <Text style={{ color: 'white', fontFamily: 'Poppins-Regular', fontSize: 14, textDecorationLine: 'underline', width: '90%'  }}>Buy now</Text>
-                </View>
-                <Image
-                  source={require('../../../assets/images/ps5.png')}
-                  style={{ aspectRatio: 1, minHeight:250, minWidth:250, width: screenHeight * 0.3, height: screenHeight * 0.3, position: 'absolute', right: 5, bottom: 30}}
-                />
-              </View>
-              <View style={styles.secondaryPanel}>
-                <View style={styles.containerMain2NewProducts}>
-                  <View style={styles.containerMainNewProductsText2}>
-                    <Text style={{ color: 'white', fontFamily: 'Poppins-Regular', fontSize: 18, textAlign: 'right', width: '40%', alignSelf: 'flex-end'}}>LED 4K Monitors</Text>
-                    <Text style={{ color: 'white', fontFamily: 'Poppins-Regular', fontSize: 12, textAlign: 'right', width: '50%', alignSelf: 'flex-end', textShadowColor: 'black', textShadowRadius: 15, }}>Most advanced technologies</Text>
-                    <Text style={{ color: 'white', fontFamily: 'Poppins-Regular', fontSize: 14, textAlign: 'right', width: '90%', alignSelf: 'flex-end', textDecorationLine: 'underline' }}>Buy now</Text>
+              <Link href={{
+                pathname: "/home/productScreen",
+                params: { 
+                  id: items[3].id,
+                  imageUrl: items[3].imagen, 
+                  name: items[3].producto, 
+                  price: getOfferPrice(items[3].precio, items[3].descuento),
+                  description: items[3].descripcion,
+                },
+              }} asChild>
+                <Pressable style={styles.containerMainNewProducts}>
+                  <View style={styles.containerMainNewProductsText}>
+                    <Text style={{ color: 'white', fontFamily: 'Poppins-Regular', fontSize: 18, width: '90%' }}>Playstation 5</Text>
+                    <Text style={{ color: 'white', fontFamily: 'Poppins-Regular', fontSize: 12, textShadowColor: 'black', textShadowRadius: 15, width: '60%'  }}>Black and white version of PS5 coming out on sale.</Text>
+                    <Text style={{ color: 'white', fontFamily: 'Poppins-Regular', fontSize: 14, textDecorationLine: 'underline', width: '90%'  }}>Buy now</Text>
                   </View>
                   <Image
-                    source={require('../../../assets/images/monitor.png')}
-                    style={{ width: 170, height: 150, position: 'absolute', left: 20, bottom: 20,}}
+                    source={require('../../../assets/images/ps5.png')}
+                    style={{ aspectRatio: 1, minHeight:250, minWidth:250, width: screenHeight * 0.3, height: screenHeight * 0.3, position: 'absolute', right: 5, bottom: 30}}
                   />
-                </View>
+                </Pressable>
+              </Link>
+              <View style={styles.secondaryPanel}>
+                <Link href={{
+                  pathname: "/home/productScreen",
+                  params: { 
+                    id: items[4].id,
+                    imageUrl: items[4].imagen, 
+                    name: items[4].producto, 
+                    price: getOfferPrice(items[4].precio, items[4].descuento),
+                    description: items[4].descripcion,
+                  },
+                }} asChild>
+                  <Pressable style={styles.containerMain2NewProducts}>
+                    <View style={styles.containerMainNewProductsText2}>
+                      <Text style={{ color: 'white', fontFamily: 'Poppins-Regular', fontSize: 18, textAlign: 'right', width: '40%', alignSelf: 'flex-end'}}>LED 4K Monitors</Text>
+                      <Text style={{ color: 'white', fontFamily: 'Poppins-Regular', fontSize: 12, textAlign: 'right', width: '50%', alignSelf: 'flex-end', textShadowColor: 'black', textShadowRadius: 15, }}>Most advanced technologies</Text>
+                      <Text style={{ color: 'white', fontFamily: 'Poppins-Regular', fontSize: 14, textAlign: 'right', width: '90%', alignSelf: 'flex-end', textDecorationLine: 'underline' }}>Buy now</Text>
+                    </View>
+                    <Image
+                      source={require('../../../assets/images/monitor.png')}
+                      style={{ width: 170, height: 150, position: 'absolute', left: 20, bottom: 20,}}
+                    />
+                  </Pressable>
+                </Link>
                 <View style={styles.containerSecondaryNewProducts}>
-                  <View style={styles.containerSecondaryProduct}>
-                    <View style={styles.containerMainSecondaryProductsText}>
-                      <Text style={{ color: 'white', fontFamily: 'Poppins-Regular', fontSize: 18, textAlign: 'right', width: '90%', alignSelf: 'flex-end'}}>Speakers</Text>
-                      <Text style={{ color: 'white', fontFamily: 'Poppins-Regular', fontSize: 12, textAlign: 'right', width: '90%', alignSelf: 'flex-end', textShadowColor: 'black', textShadowRadius: 15 }}>Amazon wireless speakers</Text>
-                    </View>
-                    <Image
-                      source={require('../../../assets/images/amazonSpeaker.png')}
-                      style={{ width: 100, height: 120, position: 'absolute', left: 0, bottom: 10,}}
-                    />
-                  </View>
-                  <View style={styles.containerSecondaryProduct}>
-                    <View style={styles.containerMainSecondaryProductsText}>
-                      <Text style={{ color: 'white', fontFamily: 'Poppins-Regular', fontSize: 18, textAlign: 'right', width: '90%', alignSelf: 'flex-end'}}>Mouse</Text>
-                      <Text style={{ color: 'white', fontFamily: 'Poppins-Regular', fontSize: 12, textAlign: 'right', width: '90%', alignSelf: 'flex-end', textShadowColor: 'black', textShadowRadius: 15 }}>Wired hp mouse HP 100</Text>
-                    </View>
-                    <Image
-                      source={require('../../../assets/images/hp100.png')}
-                      style={{ width: 110, height: 100, position: 'absolute', left: 10, bottom: 30,}}
-                    />
-                  </View>
+                  <Link href={{
+                    pathname: "/home/productScreen",
+                    params: { 
+                      id: items[5].id,
+                      imageUrl: items[5].imagen, 
+                      name: items[5].producto, 
+                      price: getOfferPrice(items[5].precio, items[5].descuento),
+                      description: items[5].descripcion,
+                    },
+                  }} asChild>
+                    <Pressable style={styles.containerSecondaryProduct}>
+                      <View style={styles.containerMainSecondaryProductsText}>
+                        <Text style={{ color: 'white', fontFamily: 'Poppins-Regular', fontSize: 18, textAlign: 'right', width: '90%', alignSelf: 'flex-end'}}>Speakers</Text>
+                        <Text style={{ color: 'white', fontFamily: 'Poppins-Regular', fontSize: 12, textAlign: 'right', width: '90%', alignSelf: 'flex-end', textShadowColor: 'black', textShadowRadius: 15 }}>Amazon wireless speakers</Text>
+                      </View>
+                      <Image
+                        source={require('../../../assets/images/amazonSpeaker.png')}
+                        style={{ width: 100, height: 120, position: 'absolute', left: 0, bottom: 10,}}
+                      />
+                    </Pressable>
+                  </Link>
+                  <Link href={{
+                    pathname: "/home/productScreen",
+                    params: { 
+                      id: items[6].id,
+                      imageUrl: items[6].imagen, 
+                      name: items[6].producto, 
+                      price: getOfferPrice(items[6].precio, items[6].descuento),
+                      description: items[6].descripcion,
+                    },
+                  }} asChild>
+                    <Pressable style={styles.containerSecondaryProduct}>
+                      <View style={styles.containerMainSecondaryProductsText}>
+                        <Text style={{ color: 'white', fontFamily: 'Poppins-Regular', fontSize: 18, textAlign: 'right', width: '90%', alignSelf: 'flex-end'}}>Mouse</Text>
+                        <Text style={{ color: 'white', fontFamily: 'Poppins-Regular', fontSize: 12, textAlign: 'right', width: '90%', alignSelf: 'flex-end', textShadowColor: 'black', textShadowRadius: 15 }}>Wired hp mouse HP 100</Text>
+                      </View>
+                      <Image
+                        source={require('../../../assets/images/hp100.png')}
+                        style={{ width: 110, height: 100, position: 'absolute', left: 10, bottom: 30,}}
+                      />
+                    </Pressable>
+                  </Link>
                 </View>
               </View>
             </View>
@@ -325,6 +351,7 @@ const styles = StyleSheet.create({
     height: 60, // adjust as needed
   },
   containerLocation: {
+    marginTop: 10,
     justifyContent: 'center',
     alignItems: 'center',
     height: 60,
@@ -363,7 +390,7 @@ const styles = StyleSheet.create({
     paddingTop: 2,
   },
   containerImage: {
-    marginTop: 20,
+    marginTop: 10,
     justifyContent: 'center',
     alignItems: 'center',
     height: screenHeight * 0.2,

@@ -124,7 +124,6 @@ const styles = StyleSheet.create({
   productPrice: {
     fontSize: 20,
     color: '#333',
-    paddingLeft: 10,
   },
   quantityContainer: {
     flexDirection: 'row',

@@ -1,7 +1,8 @@
-import { View, Text, StyleSheet, Image, Pressable, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, Pressable, FlatList, TouchableOpacity, Modal } from 'react-native';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import useStore from '@/components/useStore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useState } from 'react';
 
 interface CartItemProps {
   item: {
@@ -74,8 +75,12 @@ export default function Tab() {
   const cartItems = useStore((state) => state.cartItems);
   const removeCartItems = useStore((state) => state.removeCartItems);
   const addToHistory = useStore((state) => state.addToHistory);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const handleCheckout = async () => {
+    if (cartItems.length === 0) {
+      return;
+    }
     try {
       const newCart = {
         id: Date.now(), // Usar timestamp como ID único
@@ -88,11 +93,10 @@ export default function Tab() {
       await addToHistory(newCart);
 
       // Vaciar el carrito actual
+      setModalVisible(true);
       removeCartItems();
-      alert('Checkout successful!');
     } catch (error) {
       console.error('Error saving cart to AsyncStorage:', error);
-      alert('Failed. Please try again.');
     }
   };
 
@@ -114,6 +118,29 @@ export default function Tab() {
       <TouchableOpacity style={styles.checkout} onPress={handleCheckout}>
         <Text style={styles.checkoutText}>Go to checkout</Text>
       </TouchableOpacity>
+      {/*Modal*/}
+      <Modal
+        animationType="slide"
+        transparent={false}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.container}>
+          <FontAwesome6 name="circle-check" size={124} color="green" />
+          <Text style={styles.title}>Su orden ha sido aceptada</Text>
+          <Text style={styles.description}>
+            ¡La orden llegará a su puerta lo más rápido posible!
+          </Text>
+          <Pressable
+              style={styles.button}
+              onPress={() => setModalVisible(!modalVisible)}
+            >
+              <Text style={styles.buttonText}>Cerrar</Text>
+          </Pressable>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -217,5 +244,35 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    marginTop: 40,
+  },
+  description: {
+    fontSize: 16,
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  button: {
+    backgroundColor: '#f44336',
+    padding: 15,
+    borderRadius: 5,
+    width: '80%',
+    marginBottom: 10,
+  },
+  buttonback: {
+    backgroundColor: '#f44336',
+    padding: 15,
+    borderRadius: 5,
+    width: '40%',
+    marginBottom: 10,
+  },
+  buttonText: {
+    color: '#fff',
+    textAlign: 'center',
+    fontSize: 18,
   },
 });

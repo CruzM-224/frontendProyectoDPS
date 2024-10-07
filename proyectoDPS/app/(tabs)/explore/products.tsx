@@ -44,8 +44,14 @@ function Element ({ id, image, text, descuento, originalPrice, description  }: E
         />
         <Text style={styles.offerText}>{text}</Text>
         <View style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
-          <Text style={styles.offerPrice}>${price}</Text>
-          <Text style={styles.originalPrice}>${originalPrice}</Text>
+          {Number.parseFloat(descuento) > 0 ? (
+            <>
+              <Text style={styles.offerPrice}>${price}</Text>
+              <Text style={styles.originalPrice}>${originalPrice}</Text>
+            </>
+          ) : (
+            <Text style={styles.offerPrice}>${price}</Text>
+          )}
         </View>
       </Pressable>
     </Link>
@@ -87,6 +93,7 @@ export default function Tab() {
       <Text style={styles.title}>{getTitle(categoryId)}
       </Text>
       <FlatList
+        style={{ width: '90%' }}
         data={filteredItems}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
@@ -123,7 +130,6 @@ const styles = StyleSheet.create({
   categoriesListContainer: {
     flexDirection: 'column',
     justifyContent: 'space-around',
-    width: screenWidth  * 0.9,
     paddingBottom: 20,
   },
   offer: {

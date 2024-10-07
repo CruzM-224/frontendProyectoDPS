@@ -39,7 +39,8 @@ export default function Layout() {
   if (!loggedIn) {
     return (
       <Stack>
-        <Stack.Screen name="(login)" options={{headerShown: false}} />
+        <Stack.Screen name="(login)" options={{ headerShown: false }} />
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       </Stack>
     );
   }
@@ -48,6 +49,7 @@ export default function Layout() {
   if (loggedIn){
     return (
       <Stack>
+        <Stack.Screen name="(login)" options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       </Stack>
     );
