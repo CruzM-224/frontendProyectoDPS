@@ -53,7 +53,7 @@ En la linea 32 generar el siguiente cambio: " const API_URL = 'http://IP-DEL-DIS
 
 Para conocer cual es la IP del dispositivo se puede encontrar desde la terminal con el comando: " ipconfig ".
 
-#Preparación del backend
+# Preparación del backend
 
 Inicialmente, desde una terminal vamos a desplazarnos hacia la ruta en la cual se encuentra nuestra carpeta que almacena el backend, la cual termina en " /backendProyectoDPS ".
 
