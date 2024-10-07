@@ -174,7 +174,7 @@ function App() {
               <Element id={items[0].id} image={items[0].imagen} text={items[0].producto} descuento={items[0].descuento} originalPrice={items[0].precio} description={items[0].descripcion} />
               <Element id={items[1].id} image={items[1].imagen} text={items[1].producto} descuento={items[1].descuento} originalPrice={items[1].precio} description={items[1].descripcion} />
               <Element id={items[2].id} image={items[2].imagen} text={items[2].producto} descuento={items[2].descuento} originalPrice={items[2].precio} description={items[2].descripcion} />
-              <Element id={items[3].id} image={items[3].imagen} text={items[3].producto} descuento={items[3].descuento} originalPrice={items[3].precio} description={items[3].descripcion} />
+              <Element id={items[7].id} image={items[7].imagen} text={items[7].producto} descuento={items[7].descuento} originalPrice={items[3].precio} description={items[3].descripcion} />
             </View>
           </View>
           {/* line */}
