@@ -38,25 +38,25 @@ Tecnologías Utilizadas:
 ## Guía de instalación
 Inicialmente, es necesario clonar ambos repositorios en nuestro dispositivo.
 
-- Enlace para clonar el repositorio de FrontEnd: https://github.com/CruzM-224/frontendProyectoDPS.git
+- Enlace para clonar el repositorio de Frontend: https://github.com/CruzM-224/frontendProyectoDPS.git
 - Enlace para clonar el repositorio de Backend: https://github.com/CruzM-224/backendProyectoDPS.git
 
 #### Preparación del frontend
-Seguidamente, vamos a dirigirnos desde la terminal hasta la carpeta que almacena nuestra aplicación, en este caso: /proyectoDPS para instalar las dependecias de nuestro proyecto.
+Seguidamente, vamos a dirigirnos, desde la terminal, hasta la carpeta que almacena nuestra aplicación, en este caso: /proyectoDPS, para instalar las dependencias de nuestro proyecto.
 
-Para desplazarnos entre las carpetas ocupado "cd ruta-específica"
-Para descargar todas las dependencias se utiliza el comando: "npm install"
+Para desplazarnos entre las carpetas utilizamos cd ruta-específica. Para descargar todas las dependencias se utiliza el comando: npm install.
 
-Una vez descargadas las dependencias, es necesario realizar un cambio en el archivo "proyectoDPS/app/(tabs)/home/index.tsx" en el cual agregaremos la IP de nuestro dispositivo para que se logre conectar a la API. 
+Una vez descargadas las dependencias, es necesario realizar un cambio en el archivo proyectoDPS/app/(tabs)/home/index.tsx, en el cual agregaremos la IP de nuestro dispositivo para que se logre conectar a la API.
 
-En la linea 32 generar el siguiente cambio: " const API_URL = 'http://IP-DEL-DISPOSITIVO:8000/api/productos/get'; "
+En la línea 32, generar el siguiente cambio:
+const API_URL = 'http://IP-DEL-DISPOSITIVO:8000/api/productos/get';
 
-Para conocer cual es la IP del dispositivo se puede encontrar desde la terminal con el comando: " ipconfig ".
+Para conocer cuál es la IP del dispositivo, se puede encontrar desde la terminal con el comando: ipconfig.
 
 #### Preparación del backend
 
-Inicialmente, desde una terminal vamos a desplazarnos hacia la ruta en la cual se encuentra nuestra carpeta que almacena el backend, la cual termina en " /backendProyectoDPS ".
+Inicialmente, desde una terminal, vamos a desplazarnos hacia la ruta en la cual se encuentra nuestra carpeta que almacena el backend, la cual termina en /backendProyectoDPS.
 
-Seguidamente, realizaremos el comando " docker-compose up " para levantar los servicios del backend dentro de un contenedor.
+Seguidamente, realizaremos el comando docker-compose up para levantar los servicios del backend dentro de un contenedor.
 
-De esta forma, hemos generado la preparación necesaria para lograr que la aplicación funcione correctamente.
+De esta forma, hemos generado la preparación necesaria para que la aplicación funcione correctamente.
