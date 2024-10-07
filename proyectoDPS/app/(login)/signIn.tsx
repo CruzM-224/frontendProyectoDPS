@@ -13,7 +13,6 @@ const LoginScreen = () => {
     let emailError = '';
     let passwordError = '';
 
-    // Email validation using regex
     const emailRegex = /\S+@\S+\.\S+/;
     if (!email.trim()) {
       emailError = 'Email is required';
@@ -21,7 +20,6 @@ const LoginScreen = () => {
       emailError = 'Invalid email format';
     }
 
-    // Password validation (simple length check)
     const passwordRegex = /^(?=.*[A-Z])(?=.*[^a-zA-Z]).{6,}$/;
     if (!password.trim()) {
       passwordError = 'Password is required';
@@ -29,7 +27,6 @@ const LoginScreen = () => {
       passwordError = 'Password must contain at least one uppercase letter and one non-letter character';
     }
 
-    // Set errors
     setErrors({ email: emailError, password: passwordError });
 
     // If no errors, proceed to login
@@ -43,7 +40,7 @@ const LoginScreen = () => {
     <View style={styles.container}>
       {/* Logo */}
       <Image
-        source={require('../../assets/images/Logotipo-UDB-Tech-shop.png')} // replace with your logo path
+        source={require('../../assets/images/Logotipo-UDB-Tech-shop.png')}
         style={styles.logo}
       />
 

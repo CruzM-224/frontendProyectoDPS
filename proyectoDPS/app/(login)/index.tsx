@@ -10,7 +10,7 @@ const PrincipalLogin= () => {
       <StatusBar style="dark" />
       {/* Logo */}
       <Image
-        source={require('../../assets/images/Logotipo-UDB-Tech-shop.png')} // replace with your logo path
+        source={require('../../assets/images/Logotipo-UDB-Tech-shop.png')} 
         style={styles.logo}
       />
       
