@@ -41,7 +41,7 @@ Inicialmente, es necesario clonar ambos repositorios en nuestro dispositivo.
 - Enlace para clonar el repositorio de FrontEnd: https://github.com/CruzM-224/frontendProyectoDPS.git
 - Enlace para clonar el repositorio de Backend: https://github.com/CruzM-224/backendProyectoDPS.git
 
-# Preparación del frontend
+#### Preparación del frontend
 Seguidamente, vamos a dirigirnos desde la terminal hasta la carpeta que almacena nuestra aplicación, en este caso: /proyectoDPS para instalar las dependecias de nuestro proyecto.
 
 Para desplazarnos entre las carpetas ocupado "cd ruta-específica"
@@ -53,7 +53,7 @@ En la linea 32 generar el siguiente cambio: " const API_URL = 'http://IP-DEL-DIS
 
 Para conocer cual es la IP del dispositivo se puede encontrar desde la terminal con el comando: " ipconfig ".
 
-# Preparación del backend
+#### Preparación del backend
 
 Inicialmente, desde una terminal vamos a desplazarnos hacia la ruta en la cual se encuentra nuestra carpeta que almacena el backend, la cual termina en " /backendProyectoDPS ".
 
