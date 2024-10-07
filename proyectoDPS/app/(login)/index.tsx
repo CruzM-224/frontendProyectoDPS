@@ -1,10 +1,14 @@
-import { Link } from 'expo-router';
-import React from 'react';
+import { Link, router } from 'expo-router';
+import React, {useState} from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, Pressable } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import axios from 'axios';
 
 
 const PrincipalLogin= () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />

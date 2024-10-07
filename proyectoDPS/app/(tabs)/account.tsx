@@ -3,11 +3,11 @@ import { View, Text, StyleSheet, TouchableOpacity, FlatList, Pressable, Modal } 
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import useStore from '@/components/useStore';
+import { router } from 'expo-router';
 
 import { auth } from '../../firebaseConfig';
 import { signOut } from 'firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 interface AccountSettingProps {
   icon: string,
   text: string,
@@ -33,6 +33,8 @@ export default function Tab() {
   const [isModalVisible, setModalVisible] = useState(false);
   const history = useStore((state) => state.history);
   const fetchHistory = useStore((state) => state.fetchHistory);
+  const user = useStore((state) => state.user);
+  const removeUser = useStore((state) => state.removeUser);
 
   useEffect(() => {
     fetchHistory();
@@ -49,8 +51,8 @@ export default function Tab() {
           <FontAwesome name="user-circle-o" size={50} color="black" />
         </View>
         <View style={styles.containerHeaderText}>
-          <Text style={styles.Name}>Jose Perez</Text>
-          <Text style={styles.Email}>jose_perez@gmail.com</Text>
+          <Text style={styles.Name}>{user.nombres} {user.apellidos}</Text>
+          <Text style={styles.Email}>{user.email}</Text>
         </View>
       </View>
       <View style={styles.containerBody}>
@@ -102,7 +104,9 @@ export default function Tab() {
           await signOut(auth);
           await AsyncStorage.removeItem("@user");
           console.log('Logged out');
+          router.navigate('/(login)');
         }
+        
       }>
         <View style={styles.iconSignOut}>
           <FontAwesome name="sign-out" size={24} color="white" />

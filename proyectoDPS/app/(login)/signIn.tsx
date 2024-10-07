@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Modal } from 'react-native';
 import { Link, useRouter } from 'expo-router';
+import axios from 'axios';
+import useStore from '@/components/useStore';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
@@ -8,6 +10,27 @@ const LoginScreen = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({ email: '', password: '' });
   const router = useRouter();
+
+  const setUser = useStore((state) => state.setUser);
+
+  const handleSignIn = () => {
+
+    axios.post('http://192.168.0.10:8000/api/tienda/login', {
+      email: email,
+      password: password,
+    }
+    ).then((response) => {
+      console.log(response);
+      setUser(response.data.usuario);
+      console.log('Usuario logueado:', response.data.usuario);
+      router.navigate('/(tabs)/home');
+    }).catch((error) => {
+      console.log(error);
+      setEmail('');
+      setPassword('');
+      router.navigate('/(login)/signIn');
+    });
+  };
 
   const validateInputs = () => {
     let emailError = '';
@@ -85,7 +108,7 @@ const LoginScreen = () => {
       </TouchableOpacity>
 
       {/* Botón de inicio de sesión */}
-      <TouchableOpacity style={styles.loginButton} onPress={validateInputs}>
+      <TouchableOpacity style={styles.loginButton} onPress={handleSignIn}>
         <Text style={styles.loginButtonText}>Log in</Text>
       </TouchableOpacity>
 
@@ -99,6 +122,7 @@ const LoginScreen = () => {
           </TouchableOpacity>
         </Link>
       </View>
+      
     </View>
   );
 };

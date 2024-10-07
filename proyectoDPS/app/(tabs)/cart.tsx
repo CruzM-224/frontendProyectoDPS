@@ -3,6 +3,7 @@ import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import useStore from '@/components/useStore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState } from 'react';
+import axios from 'axios';
 
 interface CartItemProps {
   item: {
@@ -76,8 +77,28 @@ export default function Tab() {
   const removeCartItems = useStore((state) => state.removeCartItems);
   const addToHistory = useStore((state) => state.addToHistory);
   const [modalVisible, setModalVisible] = useState(false);
+  const user = useStore((state) => state.user);
+
+  const handleCartData = () => {
+    console.log(cartItems.map((item) => ({
+      producto: Number.parseInt(item.id),
+      cantidad: item.quantity
+    })));
+    console.log("Carga");
+    axios.post('http://192.168.0.10:8000/api/ventas/registrar', {
+      id_cliente: user.id,
+      monto: cartItems.reduce((acc, item) => acc + (Number.parseFloat(item.price) * item.quantity), 0),
+      id_estado: 1,
+      direccion: user.direccion,
+      items: cartItems.map((item) => ({
+        producto: Number.parseInt(item.id),
+        cantidad: item.quantity
+      }))
+    }).then((response) => {response});
+  };
 
   const handleCheckout = async () => {
+    handleCartData();
     if (cartItems.length === 0) {
       return;
     }
@@ -135,7 +156,9 @@ export default function Tab() {
           </Text>
           <Pressable
               style={styles.button}
-              onPress={() => setModalVisible(!modalVisible)}
+              onPress={() => {
+                setModalVisible(!modalVisible);
+              }}
             >
               <Text style={styles.buttonText}>Cerrar</Text>
           </Pressable>

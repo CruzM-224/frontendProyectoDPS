@@ -76,6 +76,11 @@ const useStore = create((set) => ({
     //location
     location: null,
     setLocation: (location) => set({ location }),
+
+    //User
+    user: null,
+    setUser: (user) => set({ user }),
+    removeUser: () => set({ user: null }),
 }));
 
 export default useStore;
