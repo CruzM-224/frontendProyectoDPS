@@ -19,7 +19,7 @@
 - Trello: https://trello.com/b/CRX20Vn2/kanban-task-board
 - Figma (Diseño web): https://www.figma.com/design/Jcl0zMDv7p44bJdPKPJeSs/Web-Mock-up?node-id=0-1&t=QTQv6zZptFrP8x2y-1
 - Figma (Diseño móvil): https://www.figma.com/design/uRyx2PBWSlmmxFLrRNaaAL/Movil-Mock-ups?t=QTQv6zZptFrP8x2y-1
-- Manual de usuarios:
+- Manual de usuarios: https://github.com/CruzM-224/frontendProyectoDPS/blob/main/MANUALES/MANUAL%20USUARIO%20UDB%20TECH-SHOP.pdf
 - Manual técnico:
 
 ## Licencias Creative Commons
